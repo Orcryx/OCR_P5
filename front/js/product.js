@@ -37,7 +37,8 @@ function quantityProduct()
 const quantity = document.getElementById("quantity");
 quantity.addEventListener("change", ()=>
     {
-        console.log('Dans changement ' + quantityProduct());
+        //console.log('Quantité sélectionnée : ' + quantityProduct());
+        return quantityProduct();
     }
 )
 
@@ -46,7 +47,8 @@ quantity.addEventListener("change", ()=>
 const color = document.getElementById("colors");
 color.addEventListener("change", ()=>
     {
-        console.log(colorsProduct());
+        //console.log('Couleur sélectionnée : ' + colorsProduct());
+        return colorsProduct();
     }
 )
 /** *Retourner la valeur dans option de id=colors */
@@ -57,9 +59,30 @@ function colorsProduct()
 }
 
 
+
 /** *Ajouter les données au localStorage lorsque évenement de click sur id=addToCart + modifie le comportement par défaut avant le submit pour permettre les verifications (voir plus bas)*/
 document.querySelector("#addToCart").addEventListener('click', (e) =>
     { 
     e.preventDefault();
+    let price = parseInt(document.querySelector("#price").textContent);
+   //console.log(`Le prix du produit est :` + price);
+    let color = colorsProduct();
+    //console.log('La couleur du produit est : ' + color);
+    let quantity = quantityProduct();
+    //console.log('Le nombre de produit à commander est : ' + quantity);
+    let id = idProduct;
+    //console.log(`l'id du produit est : ` + id);
+    let name = document.querySelector("#title").textContent;
+    //console.log(`Le nom du produit est : ` + name);
+    let customerProduct =
+        {
+            idChooseProduct : id,
+            nameChooseProduct : name,
+            prixChooseProduct : price,
+            colorChooseProduct : color,
+            quantityChooseProduct : quantity,          
+        }
+    console.log(customerProduct);
+    saveDataInLocalStorage(customerProduct);
     }
 )
