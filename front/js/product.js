@@ -25,34 +25,30 @@ function myProduct(product)
     {
         document.querySelector("#colors").innerHTML +=`<option value="${product.colors[i]}">${product.colors[i]}</option>`;
     }  
+
+    /** *Ajouter les données au localStorage lorsque évenement de click sur id=addToCart + modifie le comportement par défaut avant le submit pour permettre les verifications (voir plus bas)*/
+    document.querySelector("#addToCart").addEventListener('click', (e) =>
+    { 
+        e.preventDefault();
+        let color = document.querySelector("#colors").value;
+        //console.log('La couleur du produit est : ' + color);
+        let quantity = parseInt(document.querySelector("#quantity").value);
+        //console.log('Le nombre de produit à commander est : ' + quantity);
+        let customerProduct =
+            {
+                idChooseProduct : idProduct,
+                nameChooseProduct : `${product.name}`,
+                prixChooseProduct : `${product.price}`,
+                colorChooseProduct : color,
+                quantityChooseProduct : quantity,
+                imageChooseProduct : `${product.imageUrl}`,          
+            }
+        //console.log(customerProduct);
+        saveDataInLocalStorage(customerProduct);
+    })
 }
 
-/** *Ajouter les données au localStorage lorsque évenement de click sur id=addToCart + modifie le comportement par défaut avant le submit pour permettre les verifications (voir plus bas)*/
-document.querySelector("#addToCart").addEventListener('click', (e) =>
-    { 
-    e.preventDefault();
-    let price = parseInt(document.querySelector("#price").textContent);
-   //console.log(`Le prix du produit est :` + price);
-    let color = document.querySelector("#colors").value;
-    //console.log('La couleur du produit est : ' + color);
-    let quantity = parseInt(document.querySelector("#quantity").value);
-    //console.log('Le nombre de produit à commander est : ' + quantity);
-    let id = idProduct;
-    //console.log(`l'id du produit est : ` + id);
-    let name = document.querySelector("#title").textContent;
-    //console.log(`Le nom du produit est : ` + name);
-    let customerProduct =
-        {
-            idChooseProduct : id,
-            nameChooseProduct : name,
-            prixChooseProduct : price,
-            colorChooseProduct : color,
-            quantityChooseProduct : quantity,          
-        }
-    console.log(customerProduct);
-    saveDataInLocalStorage(customerProduct);
-    }
-)
+
 
 function saveDataInLocalStorage(customerProduct)
 {
