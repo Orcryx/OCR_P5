@@ -1,9 +1,9 @@
 const url =  window.location.href; // propriété qui permet de récupérer l'url d'un page courante 
-console.log(' url du site est : ' + url);
+//console.log(' url du site est : ' + url);
 const newURL = new URL(url); // Créer un nouvel objet à partir de url
-console.log(' newURL du site est : ' + newURL);
+//console.log(' newURL du site est : ' + newURL);
 const idProduct = newURL.searchParams.get("_id"); // Isolé l'ID qui est dans newURL avec .searcParams qui permet de récupérer le paramètre "_id" dans l'url avec .get
-console.log(' ID du produit est : ' +  idProduct);
+//console.log(' ID du produit est : ' +  idProduct);
 
 /** * Récupérer les informations d'un produit de API avec son ID */
 fetch("http://localhost:3000/api/products/"+ idProduct)
@@ -33,9 +33,9 @@ document.querySelector("#addToCart").addEventListener('click', (e) =>
     e.preventDefault();
     let price = parseInt(document.querySelector("#price").textContent);
    //console.log(`Le prix du produit est :` + price);
-    let color = document.getElementById("colors").value;
+    let color = document.querySelector("#colors").value;
     //console.log('La couleur du produit est : ' + color);
-    let quantity = parseInt(document.getElementById("quantity").value);
+    let quantity = parseInt(document.querySelector("#quantity").value);
     //console.log('Le nombre de produit à commander est : ' + quantity);
     let id = idProduct;
     //console.log(`l'id du produit est : ` + id);
@@ -53,3 +53,31 @@ document.querySelector("#addToCart").addEventListener('click', (e) =>
     saveDataInLocalStorage(customerProduct);
     }
 )
+
+function saveDataInLocalStorage(customerProduct)
+{
+
+let productLocalStorage = JSON.parse(localStorage.getItem("sofa"));
+// Si il n'y a pas de produit en locaStorage alors : créer un produit en localstorage et pousser les données de "customerProduct" dedans
+if ( productLocalStorage === null)
+    {
+        productLocalStorage = [];
+        productLocalStorage.push(customerProduct);
+        // Stocker dans le localstorage avec la méthode setIntem l'objet customerProduct transformé en chaine de caractère JSON
+        localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
+    } else 
+        {
+            const identicalProduct = productLocalStorage.find(element => element.idChooseProduct === customerProduct.idChooseProduct && element.colorChooseProduct === customerProduct.colorChooseProduct);
+            if (identicalProduct === undefined) // Si la méthode find() retourne la valeur undefined, il n'y a pas de produit identique dans le panier, donc ajouter un nouvel élément dans le tableau productLocalStorage puis le passer en string
+                {
+                    productLocalStorage.push(customerProduct);
+                    localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
+                } else
+                    {
+                        identicalProduct.quantityChooseProduct = customerProduct.quantityChooseProduct; // couleur et ID identique alors la quantité du tableau est modifiée
+                        productLocalStorage.push(customerProduct);
+                        localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
+                    }
+        }
+
+}
