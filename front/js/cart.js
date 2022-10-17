@@ -2,8 +2,8 @@
 let order = JSON.parse(localStorage.getItem("sofa"));
 console.log(order);
 
-/** Afficher le panier */
 
+/** Afficher le panier */
 for(i=0; i<order.length ; i++)
     {
         document.querySelector("#cart__items").innerHTML +=`

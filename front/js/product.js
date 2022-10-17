@@ -71,8 +71,7 @@ if ( productLocalStorage === null)
                     localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
                 } else
                     {
-                        identicalProduct.quantityChooseProduct = customerProduct.quantityChooseProduct; // couleur et ID identique alors la quantité du tableau est modifiée
-                        productLocalStorage.push(customerProduct);
+                        identicalProduct.quantityChooseProduct += customerProduct.quantityChooseProduct; // couleur et ID identique alors la quantité du tableau est modifiée
                         localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
                     }
         }
