@@ -41,7 +41,8 @@ function myProduct(product)
                 prixChooseProduct : `${product.price}`,
                 colorChooseProduct : color,
                 quantityChooseProduct : quantity,
-                imageChooseProduct : `${product.imageUrl}`,          
+                imageChooseProduct : `${product.imageUrl}`,   
+                altChooseProduct :`${product.altTxt}`,    
             }
         //console.log(customerProduct);
         saveDataInLocalStorage(customerProduct);
