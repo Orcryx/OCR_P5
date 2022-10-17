@@ -27,48 +27,15 @@ function myProduct(product)
     }  
 }
 
-/** *Retourner la valeur dans l'input id=quantity */
-function quantityProduct()
-{
-    return parseInt(document.getElementById("quantity").value);  
-}
-/** Sur evenement retourner valeur fonction quantityProduct() */
-
-const quantity = document.getElementById("quantity");
-quantity.addEventListener("change", ()=>
-    {
-        //console.log('Quantité sélectionnée : ' + quantityProduct());
-        return quantityProduct();
-    }
-)
-
-
-/** Sur evenement retourner valeur fonction colorProduct() */
-const color = document.getElementById("colors");
-color.addEventListener("change", ()=>
-    {
-        //console.log('Couleur sélectionnée : ' + colorsProduct());
-        return colorsProduct();
-    }
-)
-/** *Retourner la valeur dans option de id=colors */
-function colorsProduct()
-{
-    const colorSeclect = document.getElementById("colors").value;
-    return colorSeclect;
-}
-
-
-
 /** *Ajouter les données au localStorage lorsque évenement de click sur id=addToCart + modifie le comportement par défaut avant le submit pour permettre les verifications (voir plus bas)*/
 document.querySelector("#addToCart").addEventListener('click', (e) =>
     { 
     e.preventDefault();
     let price = parseInt(document.querySelector("#price").textContent);
    //console.log(`Le prix du produit est :` + price);
-    let color = colorsProduct();
+    let color = document.getElementById("colors").value;
     //console.log('La couleur du produit est : ' + color);
-    let quantity = quantityProduct();
+    let quantity = parseInt(document.getElementById("quantity").value);
     //console.log('Le nombre de produit à commander est : ' + quantity);
     let id = idProduct;
     //console.log(`l'id du produit est : ` + id);
