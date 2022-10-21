@@ -2,8 +2,8 @@
 let order = JSON.parse(localStorage.getItem("sofa"));
 console.log(order);
 
-
-/** Afficher le panier */
+// function displayOrder () {
+/** Afficher le panier : parcourir tout le tableau de l'objet order */
 for(i=0; i<order.length ; i++)
     {
         document.querySelector("#cart__items").innerHTML +=`
@@ -23,41 +23,40 @@ for(i=0; i<order.length ; i++)
                                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${order[i].quantityChooseProduct}">
                             </div>
                             <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem" canapeId="${order[i].idChooseProduct}" canapeColor="${order[i].colorChooseProduct}">Supprimer</p>
+                                <p class="deleteItem">Supprimer</p>
                             </div>
                         </div>
                     </div>
               </article>`;
     }
-   
-   
-/***Supprimer un élément dans le localStorage via le HTML et supprimer l'occurence dans le panier + reload page */
-    function deleteItem() {
-        let buttons = document.querySelectorAll('.deleteItem');
-        for (let button of Array.from(buttons)){
-            button.addEventListener("click", e => {
-                let canapeId = e.target.getAttribute("canapeId");
-                let canapeColor = e.target.getAttribute("canapeColor");
-                const searchDeleteItem = order.find(element => element.idChooseProduct == canapeId && element.colorChooseProduct == canapeColor);
-                order = order.filter(item => item != searchDeleteItem);
-                localStorage.setItem("sofa", JSON.stringify(order));
-                window.location.href = "cart.html";
-            })
-        }
-      }
-      
-      deleteItem();
+// }
+// displayOrder ()
 
-    // document.querySelector(".deleteItem").addEventListener('click', () =>{
+/** * Constante pour récupérer des données de construction de ma clé */
+const sofa = document.querySelector('.cart__item');
+//console.log('je récupère data-id : ' + sofa.dataset.id);
+//console.log('je récupère data-color : ' + sofa.dataset.color);
 
-    //    let products = JSON.parse(localStorage.getItem('sofa'));
-    //    //console.log(products);
-    //    //let variable de controle id + couleur
-    //    let newproducts = products.filter(p);
-    //    localStorage.setItem('sofa', JSON.stringify(newproducts))
-    //    //appeler la fonction d'affichage des produits avec les nouvelles données
-       
-    // });
+/** *Supprimer un article du panier */
+function deleteItem() {
+    let buttons = document.querySelectorAll('.deleteItem');
+    for (let button of Array.from(buttons)){
+        button.addEventListener("click", () => {
+            // créer une clé pour pointer le bon élément du localStorage à filtrer supprimer
+            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+            // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
+            order = order.filter(item => item != key);
+            //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
+            localStorage.setItem("sofa", JSON.stringify(order));
+            //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
+            window.location.href = "cart.html";
+           
+        })
+    }
+  }
+  deleteItem();
+
+
 
 // function modifProduct()
 // {
