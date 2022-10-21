@@ -37,12 +37,17 @@ const sofa = document.querySelector('.cart__item');
 //console.log('je récupère data-id : ' + sofa.dataset.id);
 //console.log('je récupère data-color : ' + sofa.dataset.color);
 
+
+
+
+
+
 /** *Supprimer un article du panier */
-function deleteItem() {
+function deleteItem(){
     let buttons = document.querySelectorAll('.deleteItem');
     for (let button of Array.from(buttons)){
         button.addEventListener("click", () => {
-            // créer une clé pour pointer le bon élément du localStorage à filtrer supprimer
+              // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
             const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
             // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
             order = order.filter(item => item != key);
@@ -51,19 +56,24 @@ function deleteItem() {
             //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
             window.location.href = "cart.html";
            
-        })
+        });
     }
   }
   deleteItem();
 
-
-
-// function modifProduct()
-// {
-//     let quantityOrder = document.querySelector('.itemQuantity');
-
-//     quantityOrder.addEventListener('change', () => 
-//     {
-        
-//     });
-// }
+  function modifProduct(){  
+    let inputs = document.querySelectorAll('.itemQuantity');
+    for(let newquantity of Array.from(inputs)){
+    newquantity.addEventListener("change", () => 
+    {
+        // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
+        const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+        // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
+        key.quantityChooseProduct = parseInt(newquantity.value);
+        order = key;
+        localStorage.setItem("sofa", JSON.stringify(order));
+        window.location.href = "cart.html";
+    });
+}
+}
+modifProduct()
