@@ -85,14 +85,13 @@ function deleteItem(){
             //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
             localStorage.setItem("sofa", JSON.stringify(order));
             //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-            window.location.reload();
-           
+            window.location.reload();          
         });
     }
   }
   deleteItem();
 
-/** *Modifier un article du panier */
+// /** *Modifier un article du panier */
 //   function modifProduct(){  
 //     let inputs = document.querySelectorAll('.itemQuantity');
 //     for(let newquantity of Array.from(inputs)){
@@ -120,38 +119,36 @@ const email = document.querySelector('#email');
 const emailWrong = document.querySelector('#emailErrorMsg');
 const submitOrder = document.querySelector('#order');
 
-/** Regex de validation du nom et prénom */
-// const regexName = /^[a-z][a-z '-.,'];
+/** Modifier l'attribue pattern des inputs type='text' avec SetAttibue pour ajouter un comportement de contrôle */
+firstname.setAttribute("pattern", "[a-zA-Z-éèà]*");
+lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
+city.setAttribute("pattern", "[a-zA-Z-éèà]*");
 
-/** Function de vérification du prénom */
-// function firstnameValidation(firstname)
+/** Stocker les ID des produits qui se trouve dans l'objet order (en parcourant le localStorage) dans un tableau */
+const tabID = order.map(sofa => sofa.idChooseProduct);
+console.log(tabID);
+
+/** Envoyer en post les éléments du formulaire + panier */
+// function sendCommande ()
 // {
-    
-// }
-
-
-
-
-/** Vérification de l'adresse email */
-// function emailValidation(email)
-// {
-//     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-//     if (emailRegex.test(email) === false)
+//     const sendTo = fetch("http://localhost:3000/api/products/order",
 //     {
-//         emailWrong.innerHTML =`Veillez saisir une adresse mail valide : monadresse@mail.fr`
-//         email.style.border = "thick solid red";
-//         return false
-//     }else
+//         method:"POST",
+//         headers : 
 //         {
-//             emailWrong.innerHTML = null;
-//             return false
-//         }   
-// }
+//             'Content-Type':'application/json'
+//         },
+//         body: JSON.stringify(
+//             {
+//                 contact:{
+//                     prenom : firstname.value, 
+//                     nom : lastname.value,
+//                     adresse : address.value, 
+//                     ville : city.value, 
+//                     mail : email.value, 
+//                 },
 
-// function emailDisplayWrong ()
-// {
-//     email.addEventListener("change", () =>
-//     {
-//        return emailValidation(email);
+//             }
+//         )
 //     });
 // }
