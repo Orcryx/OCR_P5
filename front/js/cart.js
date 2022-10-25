@@ -107,7 +107,6 @@ function deleteItem(){
         const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap );
         // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
         key.quantityChooseProduct = parseInt(newquantity.value);
-        order = key;
         localStorage.setItem("sofa", JSON.stringify(order));
         window.location.reload();
     });
