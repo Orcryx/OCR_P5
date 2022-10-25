@@ -46,6 +46,7 @@ function myProduct(product)
             }
         //console.log(customerProduct);
         saveDataInLocalStorage(customerProduct);
+        //alert('Produit(s) ajouté(s) au panier');
     })
 }
 

@@ -47,7 +47,7 @@ for(i=0; i<order.length ; i++)
                 totalQuantity.push(quantityOrder);
                 console.log(totalQuantity);
                 // additionner les quantités avec la méthode reduce()
-                const quantityArticle = totalQuantity.reduce(elementcalcul, 0);
+                let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
                 console.log('il y a ' + quantityArticle +' produit(s) dans cette commande');
                 document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
 
@@ -58,7 +58,7 @@ for(i=0; i<order.length ; i++)
                 totalPrice.push(priceTotal);
                 console.log(totalPrice);
                 // additionner les prix avec la méthode reduce()
-                const priceOrder = totalPrice.reduce(elementcalcul, 0);
+                let priceOrder = totalPrice.reduce(elementcalcul, 0);
                 console.log('le prix total de cette commande est de : ' + priceOrder);
                 document.querySelector('#totalPrice').innerHTML= priceOrder;
 
@@ -67,6 +67,9 @@ for(i=0; i<order.length ; i++)
 }
 displayOrder ()
 
+/** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage) vers un nouveau tableau "TabID" */
+let tabID = order.map(sofa => sofa.idChooseProduct);
+console.log(tabID);
 
 /** * Constante pour récupérer des données de construction de ma clé avec "data-"" */
 const sofa = document.querySelector('.cart__item');
@@ -85,7 +88,8 @@ function deleteItem(){
             //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
             localStorage.setItem("sofa", JSON.stringify(order));
             //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-            window.location.reload();          
+            window.location.reload();
+            alert("Article supprimé du panier.");          
         });
     }
   }
@@ -97,20 +101,22 @@ function deleteItem(){
 //     for(let newquantity of Array.from(inputs)){
 //     newquantity.addEventListener("change", () => 
 //     {
-//         // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
-//         const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+//         const idKanap  = sofa.dataset.id;
+//         const colorKanap = sofa.dataset.color;
+//         // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
+//         const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap );
 //         // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
 //         key.quantityChooseProduct = parseInt(newquantity.value);
 //         order = key;
 //         localStorage.setItem("sofa", JSON.stringify(order));
-//        // window.location.reload();
+//         window.location.reload();
 //     });
 // }
 // }
 // modifProduct();
 
-/** *Gestion du formulaire de commande - REGEX */
 
+/** *Gestion du formulaire de commande - REGEX */
 const firstname = document.querySelector('#firstName');
 const lastname = document.querySelector('#lastName');
 const address = document.querySelector('#address');
@@ -119,36 +125,51 @@ const email = document.querySelector('#email');
 const emailWrong = document.querySelector('#emailErrorMsg');
 const submitOrder = document.querySelector('#order');
 
-/** Modifier l'attribue pattern des inputs type='text' avec SetAttibue pour ajouter un comportement de contrôle */
+/** Modifier l'attribue "pattern" des inputs type='text' avec "SetAttibue" pour ajouter des règles de contrôle */
 firstname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 city.setAttribute("pattern", "[a-zA-Z-éèà]*");
 
-/** Stocker les ID des produits qui se trouve dans l'objet order (en parcourant le localStorage) dans un tableau */
-const tabID = order.map(sofa => sofa.idChooseProduct);
-console.log(tabID);
 
-/** Envoyer en post les éléments du formulaire + panier */
-// function sendCommande ()
-// {
-//     const sendTo = fetch("http://localhost:3000/api/products/order",
-//     {
-//         method:"POST",
-//         headers : 
-//         {
-//             'Content-Type':'application/json'
-//         },
-//         body: JSON.stringify(
-//             {
-//                 contact:{
-//                     prenom : firstname.value, 
-//                     nom : lastname.value,
-//                     adresse : address.value, 
-//                     ville : city.value, 
-//                     mail : email.value, 
-//                 },
 
-//             }
-//         )
-//     });
-// }
+/** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
+document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
+    e.preventDefault();
+    let validation = true;
+    for(let input of document.querySelectorAll(".cart__order__form__question input")) {
+    validation &= input.reportValidity();
+        if (!validation) {
+            break;
+        } 
+    }   
+    if (validation) {
+        const result = fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Ajouter les élements de contact du formulaire
+                contact: {
+                    firstName: firstname.value,
+                    lastName: lastname.value,
+                    address: address.value,
+                    city: city.value,
+                    email: email.value
+                    },
+                //Ajouter la liste des ID produits
+                products : tabID
+            })
+        });
+        result.then(async (commande) => {
+            try {
+                const myCommande = await commande.json();
+                window.location.href = `confirmation.html?_id=${myCommande.orderId}`;
+                localStorage.clear();
+            } catch (e) {
+            }
+        });
+    }
+})
+
+
