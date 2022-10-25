@@ -60,7 +60,7 @@ let productLocalStorage = JSON.parse(localStorage.getItem("sofa"));
 if ( productLocalStorage === null)
     {
         productLocalStorage = [];
-        productLocalStorage.push(customerProduct); // créer un entrée dans localStorage
+        productLocalStorage.push(customerProduct); // créer un entrée dans localStorage : pousser costumerProduct dans productLocalStorage
         // Stocker dans le localstorage avec la méthode setIntem l'objet customerProduct transformé en chaine de caractère JSON
         localStorage.setItem("sofa", JSON.stringify(productLocalStorage));
     } else 

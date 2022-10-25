@@ -88,8 +88,9 @@ function deleteItem(){
             //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
             localStorage.setItem("sofa", JSON.stringify(order));
             //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-            window.location.reload();
-            alert("Article supprimé du panier.");          
+            // window.location.reload();
+            // alert("Article supprimé du panier.");   
+            displayOrder();       
         });
     }
   }
@@ -131,7 +132,6 @@ lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 city.setAttribute("pattern", "[a-zA-Z-éèà]*");
 
 
-
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
     e.preventDefault();
@@ -157,19 +157,22 @@ document.querySelector(".cart__order__form__submit").addEventListener("click", (
                     city: city.value,
                     email: email.value
                     },
-                //Ajouter la liste des ID produits
+                //Ajouter ID produit
                 products : tabID
             })
         });
         result.then(async (commande) => {
             try {
                 const myCommande = await commande.json();
+                console.log(myCommande);
+                // rediriger vers la page de confirmation en utilisant l'ID 
                 window.location.href = `confirmation.html?_id=${myCommande.orderId}`;
+                // clear pour ne pas stocker ou conservé le numero de la commande 
                 localStorage.clear();
-            } catch (e) {
-            }
+            } catch (e) {}
         });
     }
 })
 
 
+/** TESTER DES CHOSES */
