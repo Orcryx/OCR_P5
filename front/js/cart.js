@@ -69,7 +69,7 @@ displayOrder ()
 
 /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage) vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
-console.log(tabID);
+//console.log(tabID);
 
 /** * Constante pour récupérer des données de construction de ma clé avec "data-"" */
 const sofa = document.querySelector('.cart__item');
@@ -88,9 +88,8 @@ function deleteItem(){
             //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
             localStorage.setItem("sofa", JSON.stringify(order));
             //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-            // window.location.reload();
-            // alert("Article supprimé du panier.");   
-            displayOrder();       
+            window.location.reload();
+            alert('Article supprimé du panier.');      
         });
     }
   }
@@ -164,9 +163,9 @@ document.querySelector(".cart__order__form__submit").addEventListener("click", (
         result.then(async (commande) => {
             try {
                 const myCommande = await commande.json();
-                console.log(myCommande);
+                //console.log(myCommande);
                 // rediriger vers la page de confirmation en utilisant l'ID 
-                window.location.href = `confirmation.html?_id=${myCommande.orderId}`;
+                window.location.href = `confirmation.html?id=${myCommande.orderId}`;
                 // clear pour ne pas stocker ou conservé le numero de la commande 
                 localStorage.clear();
             } catch (e) {}

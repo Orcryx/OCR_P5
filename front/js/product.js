@@ -2,7 +2,7 @@ const url =  window.location.href; // propriété qui permet de récupérer l'ur
 //console.log(' url du site est : ' + url);
 const newURL = new URL(url); // Créer un nouvel objet à partir de url
 //console.log(' newURL du site est : ' + newURL);
-const idProduct = newURL.searchParams.get("_id"); // Isolé l'ID qui est dans newURL avec .searcParams qui permet de récupérer le paramètre "_id" dans l'url avec .get
+const idProduct = newURL.searchParams.get("id"); // Isolé l'ID qui est dans newURL avec .searcParams qui permet de récupérer le paramètre "_id" dans l'url avec .get
 //console.log(' ID du produit est : ' +  idProduct);
 
 /** * Récupérer les informations d'un produit de API avec son ID */
@@ -34,7 +34,13 @@ function myProduct(product)
         //console.log('La couleur du produit est : ' + color);
         let quantity = parseInt(document.querySelector("#quantity").value);
         //console.log('Le nombre de produit à commander est : ' + quantity);
-        let customerProduct =
+        if( quantity ===  0 || color ===""){
+            e.preventDefault();
+            alert('Veillez chsoisir une quantité et une couleur, svp.')     
+            
+    }else 
+        {  
+            let customerProduct =
             {
                 idChooseProduct : idProduct,
                 nameChooseProduct : `${product.name}`,
@@ -44,9 +50,10 @@ function myProduct(product)
                 imageChooseProduct : `${product.imageUrl}`,   
                 altChooseProduct :`${product.altTxt}`,    
             }
-        //console.log(customerProduct);
-        saveDataInLocalStorage(customerProduct);
-        //alert('Produit(s) ajouté(s) au panier');
+            //console.log(customerProduct);
+            alert('Produit(s) ajouté(s) au panier');
+            saveDataInLocalStorage(customerProduct);
+        }
     })
 }
 
