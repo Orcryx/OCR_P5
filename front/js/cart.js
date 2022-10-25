@@ -96,25 +96,25 @@ function deleteItem(){
   }
   deleteItem();
 
-// /** *Modifier un article du panier */
-//   function modifProduct(){  
-//     let inputs = document.querySelectorAll('.itemQuantity');
-//     for(let newquantity of Array.from(inputs)){
-//     newquantity.addEventListener("change", () => 
-//     {
-//         const idKanap  = sofa.dataset.id;
-//         const colorKanap = sofa.dataset.color;
-//         // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
-//         const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap );
-//         // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
-//         key.quantityChooseProduct = parseInt(newquantity.value);
-//         order = key;
-//         localStorage.setItem("sofa", JSON.stringify(order));
-//         window.location.reload();
-//     });
-// }
-// }
-// modifProduct();
+/** *Modifier un article du panier */
+  function modifProduct(){  
+    let inputs = document.querySelectorAll('.itemQuantity');
+    for(let newquantity of Array.from(inputs)){
+    newquantity.addEventListener("change", () => 
+    {
+        const idKanap  = sofa.dataset.id;
+        const colorKanap = sofa.dataset.color;
+        // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
+        const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap );
+        // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
+        key.quantityChooseProduct = parseInt(newquantity.value);
+        order = key;
+        localStorage.setItem("sofa", JSON.stringify(order));
+        window.location.reload();
+    });
+}
+}
+modifProduct();
 
 
 /** *Gestion du formulaire de commande - REGEX */
