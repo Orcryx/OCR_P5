@@ -100,15 +100,15 @@ function deleteItem(){
 function modifProduct(){  
     let inputs = document.querySelectorAll('.itemQuantity');
     for(let newquantity of inputs){
-        console.log(inputs);
-        console.log(newquantity.value);
+        //console.log(inputs);
+        //console.log(newquantity.value);
         newquantity.addEventListener("change", (e) => 
         {
-            console.log(newquantity);
+            //console.log(newquantity);
             const idKanap  = e.target.closest('article').getAttribute("data-id");
-            console.log('IdKanape ' + idKanap);
+            //console.log('IdKanape ' + idKanap);
             const colorKanap = e.target.closest('article').getAttribute("data-color");
-            console.log('colorKanape ' + colorKanap);
+           // console.log('colorKanape ' + colorKanap);
             // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
             const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
