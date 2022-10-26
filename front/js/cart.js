@@ -71,13 +71,14 @@ displayOrder ()
 let tabID = order.map(sofa => sofa.idChooseProduct);
 //console.log(tabID);
 
-/** * Constante pour récupérer des données de construction de ma clé avec "data-"" */
-const sofa = document.querySelector('.cart__item');
-//console.log('je récupère data-id : ' + sofa.dataset.id);
-//console.log('je récupère data-color : ' + sofa.dataset.color);
+
 
 /** *Supprimer un article du panier */
 function deleteItem(){
+    /** * Constante pour récupérer des données de construction de ma clé avec "data-"" */
+    const sofa = document.querySelector('.cart__item');
+    //console.log('je récupère data-id : ' + sofa.dataset.id);
+    //console.log('je récupère data-color : ' + sofa.dataset.color);
     let buttons = document.querySelectorAll('.deleteItem');
     for (let button of Array.from(buttons)){
         button.addEventListener("click", () => {
@@ -100,15 +101,16 @@ function modifProduct(){
     let inputs = document.querySelectorAll('.itemQuantity');
     for(let newquantity of inputs){
         console.log(inputs);
-        newquantity.addEventListener("change", () => 
+        console.log(newquantity.value);
+        newquantity.addEventListener("change", (e) => 
         {
-       
-            const idKanap  = sofa.dataset.id;
+            console.log(newquantity);
+            const idKanap  = e.target.closest('article').getAttribute("data-id");
             console.log('IdKanape ' + idKanap);
-            const colorKanap = sofa.dataset.color;
+            const colorKanap = e.target.closest('article').getAttribute("data-color");
             console.log('colorKanape ' + colorKanap);
             // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
-            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+            const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
             key.quantityChooseProduct = parseInt(newquantity.value);
             //Supprimer le produit si la quantité est égale à zero et recharger
@@ -119,10 +121,8 @@ function modifProduct(){
                 window.location.reload()
             }else
             {
-                
-            //order = key ;
             localStorage.setItem("sofa", JSON.stringify(order));
-            //window.location.reload();
+            window.location.reload();
             }
 
 
