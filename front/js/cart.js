@@ -101,14 +101,17 @@ function deleteItem(){
     for(let newquantity of Array.from(inputs)){
     newquantity.addEventListener("change", () => 
     {
-        const idKanap  = sofa.dataset.id;
-        const colorKanap = sofa.dataset.color;
+        // const idKanap  = sofa.dataset.id;
+        // console.log('IdKanape' + idKanap);
+        // const colorKanap = sofa.dataset.color;
+        // console.log('colorKanape' + colorKanap);
         // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
-        const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap );
+        const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
         // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
         key.quantityChooseProduct = parseInt(newquantity.value);
+        //order = key ;
         localStorage.setItem("sofa", JSON.stringify(order));
-        window.location.reload();
+        //window.location.reload();
     });
 }
 }
@@ -129,11 +132,34 @@ firstname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 city.setAttribute("pattern", "[a-zA-Z-éèà]*");
 
+/** variable de validation : utiliser plusieurs fois */
+let validation = true;
+
+/** Aide pour saisie valide du formulaire */
+
+// Validation du prénom
+const inputFirstname = document.querySelector('#firstName');
+const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
+inputFirstname.addEventListener("change", () => {
+    console.log(inputFirstname.value);
+    console.log(inputFirstname.reportValidity());
+    if (inputFirstname.reportValidity() === validation){
+        ErrorMsgFirstname.innerHTML=" ";
+        inputFirstname.style.backgroundColor = "#96e8c3";
+        inputFirstname.style.border = "none";
+       
+    }else
+    {
+        inputFirstname.style.border = " #e89696 solid ";
+        ErrorMsgFirstname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+    }
+})
+
 
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
     e.preventDefault();
-    let validation = true;
+    //let validation = true;
     for(let input of document.querySelectorAll(".cart__order__form__question input")) {
     validation &= input.reportValidity();
         if (!validation) {
@@ -174,3 +200,6 @@ document.querySelector(".cart__order__form__submit").addEventListener("click", (
 
 
 /** TESTER DES CHOSES */
+
+
+
