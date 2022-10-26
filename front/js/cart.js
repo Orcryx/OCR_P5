@@ -81,7 +81,7 @@ function deleteItem(){
     let buttons = document.querySelectorAll('.deleteItem');
     for (let button of Array.from(buttons)){
         button.addEventListener("click", () => {
-              // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
+            // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
             const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
             // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
             order = order.filter(item => item != key);
@@ -96,27 +96,40 @@ function deleteItem(){
   deleteItem();
 
 /** *Modifier un article du panier */
-  function modifProduct(){  
+function modifProduct(){  
     let inputs = document.querySelectorAll('.itemQuantity');
-    for(let newquantity of Array.from(inputs)){
-    newquantity.addEventListener("change", () => 
-    {
-        // const idKanap  = sofa.dataset.id;
-        // console.log('IdKanape' + idKanap);
-        // const colorKanap = sofa.dataset.color;
-        // console.log('colorKanape' + colorKanap);
-        // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
-        const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
-        // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
-        key.quantityChooseProduct = parseInt(newquantity.value);
-        //order = key ;
-        localStorage.setItem("sofa", JSON.stringify(order));
-        //window.location.reload();
-    });
-}
+    for(let newquantity of inputs){
+        console.log(inputs);
+        newquantity.addEventListener("change", () => 
+        {
+       
+            const idKanap  = sofa.dataset.id;
+            console.log('IdKanape ' + idKanap);
+            const colorKanap = sofa.dataset.color;
+            console.log('colorKanape ' + colorKanap);
+            // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
+            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+            // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
+            key.quantityChooseProduct = parseInt(newquantity.value);
+            //Supprimer le produit si la quantité est égale à zero et recharger
+            if (key.quantityChooseProduct===0)
+            {
+                order = order.filter(item => item != key);
+                localStorage.setItem("sofa", JSON.stringify(order));
+                window.location.reload()
+            }else
+            {
+                
+            //order = key ;
+            localStorage.setItem("sofa", JSON.stringify(order));
+            //window.location.reload();
+            }
+
+
+        });
+    }
 }
 modifProduct();
-
 
 /** *Gestion du formulaire de commande - REGEX */
 const firstname = document.querySelector('#firstName');
@@ -138,6 +151,7 @@ let validation = true;
 /** Aide pour saisie valide du formulaire */
 
 // Validation du prénom
+function verifFirstname (){
 const inputFirstname = document.querySelector('#firstName');
 const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
 inputFirstname.addEventListener("change", () => {
@@ -153,9 +167,12 @@ inputFirstname.addEventListener("change", () => {
         inputFirstname.style.border = " #e89696 solid ";
         ErrorMsgFirstname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
     }
-})
+});
+}
+verifFirstname();
 
 // Validation du nom
+function verifLastname (){
 const inputlastname = document.querySelector('#lastName');
 const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
 inputlastname.addEventListener("change", () => {
@@ -173,8 +190,11 @@ inputlastname.addEventListener("change", () => {
         ErrorMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
     }
 })
+}
+verifLastname();
 
 //validation du nom de la ville
+function verifCity(){
 const inputcity = document.querySelector('#city');
 const cityMsglastname = document.querySelector('#cityErrorMsg');
 inputcity.addEventListener("change", () => {
@@ -191,7 +211,9 @@ inputcity.addEventListener("change", () => {
         inputcity.style.border = " #e89696 solid ";
         cityMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
     }
-})
+});
+}
+verifCity();
 
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
@@ -235,8 +257,6 @@ document.querySelector(".cart__order__form__submit").addEventListener("click", (
     }
 })
 
-
-/** TESTER DES CHOSES */
 
 
 
