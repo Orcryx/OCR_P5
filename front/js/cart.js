@@ -67,7 +67,7 @@ for(i=0; i<order.length ; i++)
 }
 displayOrder ()
 
-/** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage) vers un nouveau tableau "TabID" */
+/** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
 //console.log(tabID);
 
@@ -83,7 +83,7 @@ function deleteItem(){
     for (let button of Array.from(buttons)){
         button.addEventListener("click", () => {
             // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
-            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct == sofa.dataset.color);
+            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct === sofa.dataset.color);
             // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
             order = order.filter(item => item != key);
             //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
@@ -145,9 +145,6 @@ firstname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
 city.setAttribute("pattern", "[a-zA-Z-éèà]*");
 
-/** variable de validation : utiliser plusieurs fois */
-let validation = true;
-
 /** Aide pour saisie valide du formulaire */
 
 // Validation du prénom
@@ -157,7 +154,7 @@ const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
 inputFirstname.addEventListener("change", () => {
     //console.log(inputFirstname.value);
     //console.log(inputFirstname.reportValidity());
-    if (inputFirstname.reportValidity() === validation){
+    if (inputFirstname.reportValidity()){
         ErrorMsgFirstname.innerHTML=" ";
         inputFirstname.style.backgroundColor = "#96e8c3";
         inputFirstname.style.border = "none";    
@@ -178,7 +175,7 @@ const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
 inputlastname.addEventListener("change", () => {
    // console.log(inputlastname.value);
    // console.log(inputlastname.reportValidity());
-    if (inputlastname.reportValidity() === validation){
+    if (inputlastname.reportValidity()){
         ErrorMsglastname.innerHTML=" ";
         inputlastname.style.backgroundColor = "#96e8c3";
         inputlastname.style.border = "none";
@@ -200,7 +197,7 @@ const cityMsglastname = document.querySelector('#cityErrorMsg');
 inputcity.addEventListener("change", () => {
    // console.log(inputcity.value);
     //console.log(inputcity.reportValidity());
-    if (inputcity.reportValidity() === validation){
+    if (inputcity.reportValidity()){
         cityMsglastname.innerHTML=" ";
         inputcity.style.backgroundColor = "#96e8c3";
         inputcity.style.border = "none";
@@ -215,6 +212,8 @@ inputcity.addEventListener("change", () => {
 }
 verifCity();
 
+/** variable de validation : utiliser plusieurs fois */
+let validation = true;
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
     e.preventDefault();
