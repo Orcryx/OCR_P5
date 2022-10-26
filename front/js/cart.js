@@ -1,6 +1,6 @@
 /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
 let order = JSON.parse(localStorage.getItem("sofa"));
-console.log(order);
+//console.log(order);
 
 /** Créer des tableaux pour accumuler les prix et quantités */
 let totalPrice  = [];
@@ -42,24 +42,24 @@ for(i=0; i<order.length ; i++)
 
                 /** Calculer la quantité de produit sélectionner dans le panier */
                 let quantityOrder = parseInt(order[i].quantityChooseProduct);
-                console.log('il y a tant de produit dans ma commande :' +quantityOrder);
+                //console.log('il y a tant de produit dans ma commande :' +quantityOrder);
                 //pousser les quantités dans le tableau totalQuantity
                 totalQuantity.push(quantityOrder);
-                console.log(totalQuantity);
+                //console.log(totalQuantity);
                 // additionner les quantités avec la méthode reduce()
                 let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
-                console.log('il y a ' + quantityArticle +' produit(s) dans cette commande');
+                //console.log('il y a ' + quantityArticle +' produit(s) dans cette commande');
                 document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
 
                 /** Calculer le prix final sélectionner dans le panier */
                 let priceTotal = parseInt(order[i].prixChooseProduct * order[i].quantityChooseProduct);
-                console.log('le prix des produits est de : ' + priceTotal);
+                //console.log('le prix des produits est de : ' + priceTotal);
                 //pousser les prix dans le tableau totalPrice
                 totalPrice.push(priceTotal);
-                console.log(totalPrice);
+                //console.log(totalPrice);
                 // additionner les prix avec la méthode reduce()
                 let priceOrder = totalPrice.reduce(elementcalcul, 0);
-                console.log('le prix total de cette commande est de : ' + priceOrder);
+                //console.log('le prix total de cette commande est de : ' + priceOrder);
                 document.querySelector('#totalPrice').innerHTML= priceOrder;
 
     }
@@ -141,20 +141,57 @@ let validation = true;
 const inputFirstname = document.querySelector('#firstName');
 const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
 inputFirstname.addEventListener("change", () => {
-    console.log(inputFirstname.value);
-    console.log(inputFirstname.reportValidity());
+    //console.log(inputFirstname.value);
+    //console.log(inputFirstname.reportValidity());
     if (inputFirstname.reportValidity() === validation){
         ErrorMsgFirstname.innerHTML=" ";
         inputFirstname.style.backgroundColor = "#96e8c3";
-        inputFirstname.style.border = "none";
-       
+        inputFirstname.style.border = "none";    
     }else
     {
+        inputFirstname.style.backgroundColor = "white";
         inputFirstname.style.border = " #e89696 solid ";
         ErrorMsgFirstname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
     }
 })
 
+// Validation du nom
+const inputlastname = document.querySelector('#lastName');
+const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
+inputlastname.addEventListener("change", () => {
+   // console.log(inputlastname.value);
+   // console.log(inputlastname.reportValidity());
+    if (inputlastname.reportValidity() === validation){
+        ErrorMsglastname.innerHTML=" ";
+        inputlastname.style.backgroundColor = "#96e8c3";
+        inputlastname.style.border = "none";
+       
+    }else
+    {
+        inputlastname.style.backgroundColor = "white";
+        inputlastname.style.border = " #e89696 solid ";
+        ErrorMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+    }
+})
+
+//validation du nom de la ville
+const inputcity = document.querySelector('#city');
+const cityMsglastname = document.querySelector('#cityErrorMsg');
+inputcity.addEventListener("change", () => {
+   // console.log(inputcity.value);
+    //console.log(inputcity.reportValidity());
+    if (inputcity.reportValidity() === validation){
+        cityMsglastname.innerHTML=" ";
+        inputcity.style.backgroundColor = "#96e8c3";
+        inputcity.style.border = "none";
+       
+    }else
+    {
+        inputcity.style.backgroundColor = "white";
+        inputcity.style.border = " #e89696 solid ";
+        cityMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+    }
+})
 
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
