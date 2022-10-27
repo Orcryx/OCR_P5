@@ -82,7 +82,7 @@ function deleteItem(){
             order = order.filter(item => item != key);
             localStorage.setItem("sofa", JSON.stringify(order));
             window.location.reload();
-            alert('Article supprimé du panier.');      
+            alert('Article(s) supprimé(s) du panier.');      
         });
     }
   }
@@ -110,7 +110,7 @@ function modifProduct(){
             }else
             {
             localStorage.setItem("sofa", JSON.stringify(order));
-            window.location.reload();
+            //window.location.reload();
             }
 
 

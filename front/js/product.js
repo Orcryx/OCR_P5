@@ -35,7 +35,7 @@ function myProduct(product)
         let quantity = parseInt(document.querySelector("#quantity").value);
         if( quantity ===  0 || color ===""){
             e.preventDefault();
-            alert('Veillez chsoisir une quantité et une couleur, svp.')     
+            alert('Veillez chsoisir une quantité et une couleur.')     
             
         }else 
         {  
