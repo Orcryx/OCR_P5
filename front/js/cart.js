@@ -1,17 +1,19 @@
 /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
 let order = JSON.parse(localStorage.getItem("sofa"));
-//console.log(order);
 
 /** Créer des tableaux pour accumuler les prix et quantités */
 let totalPrice  = [];
 let totalQuantity =[];
 
+/** Afficher le contenu du panier :
+ * Afficher le panier : parcourir tout le tableau[i] de l'objet order avec une boucle
+ * Calculer les totaux avec la méthode reduce()
+ */
 function displayOrder () {
     if(order === null || order.length === 0)
     {
         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
     } else {
-/** Afficher le panier : parcourir tout le tableau de l'objet order */
 for(i=0; i<order.length ; i++)
     {
         document.querySelector("#cart__items").innerHTML +=`
@@ -37,29 +39,23 @@ for(i=0; i<order.length ; i++)
                     </div>
               </article>`;
             
-              /** Calculer les totaux avec la méthode reduce() + callback */
+             
               const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
 
                 /** Calculer la quantité de produit sélectionner dans le panier */
                 let quantityOrder = parseInt(order[i].quantityChooseProduct);
-                //console.log('il y a tant de produit dans ma commande :' +quantityOrder);
                 //pousser les quantités dans le tableau totalQuantity
                 totalQuantity.push(quantityOrder);
-                //console.log(totalQuantity);
                 // additionner les quantités avec la méthode reduce()
                 let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
-                //console.log('il y a ' + quantityArticle +' produit(s) dans cette commande');
                 document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
 
                 /** Calculer le prix final sélectionner dans le panier */
                 let priceTotal = parseInt(order[i].prixChooseProduct * order[i].quantityChooseProduct);
-                //console.log('le prix des produits est de : ' + priceTotal);
                 //pousser les prix dans le tableau totalPrice
                 totalPrice.push(priceTotal);
-                //console.log(totalPrice);
                 // additionner les prix avec la méthode reduce()
                 let priceOrder = totalPrice.reduce(elementcalcul, 0);
-                //console.log('le prix total de cette commande est de : ' + priceOrder);
                 document.querySelector('#totalPrice').innerHTML= priceOrder;
 
     }
@@ -69,26 +65,22 @@ displayOrder ()
 
 /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
-//console.log(tabID);
 
-
-
-/** *Supprimer un article du panier */
+/** *Supprimer un article du panier 
+ * Récupérer des données de construction de ma clé avec "data-""
+ * créer un tableau sur la base du résultat de recherche dataset
+ * pointer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
+ * Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
+*/
 function deleteItem(){
-    /** * Constante pour récupérer des données de construction de ma clé avec "data-"" */
+    
     const sofa = document.querySelector('.cart__item');
-    //console.log('je récupère data-id : ' + sofa.dataset.id);
-    //console.log('je récupère data-color : ' + sofa.dataset.color);
     let buttons = document.querySelectorAll('.deleteItem');
     for (let button of Array.from(buttons)){
         button.addEventListener("click", () => {
-            // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
             const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct === sofa.dataset.color);
-            // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
             order = order.filter(item => item != key);
-            //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
             localStorage.setItem("sofa", JSON.stringify(order));
-            //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
             window.location.reload();
             alert('Article supprimé du panier.');      
         });
@@ -96,24 +88,20 @@ function deleteItem(){
   }
   deleteItem();
 
-/** *Modifier un article du panier */
+/** *Modifier un article du panier
+ * créer un tableau et trouver avec find() le bon canapé à modifier en fonction de son ID + couleur
+ * Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
+ * Supprimer le produit si la quantité est égale à zero et recharger
+ */
 function modifProduct(){  
     let inputs = document.querySelectorAll('.itemQuantity');
     for(let newquantity of inputs){
-        //console.log(inputs);
-        //console.log(newquantity.value);
         newquantity.addEventListener("change", (e) => 
-        {
-            //console.log(newquantity);
+        { 
             const idKanap  = e.target.closest('article').getAttribute("data-id");
-            //console.log('IdKanape ' + idKanap);
-            const colorKanap = e.target.closest('article').getAttribute("data-color");
-           // console.log('colorKanape ' + colorKanap);
-            // créer un tableau et trouver le bon canapé à modifier en fonction de son ID + couleur
+            const colorKanap = e.target.closest('article').getAttribute("data-color");         
             const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
-            // Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
             key.quantityChooseProduct = parseInt(newquantity.value);
-            //Supprimer le produit si la quantité est égale à zero et recharger
             if (key.quantityChooseProduct===0)
             {
                 order = order.filter(item => item != key);
@@ -152,8 +140,6 @@ function verifFirstname (){
 const inputFirstname = document.querySelector('#firstName');
 const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
 inputFirstname.addEventListener("change", () => {
-    //console.log(inputFirstname.value);
-    //console.log(inputFirstname.reportValidity());
     if (inputFirstname.reportValidity()){
         ErrorMsgFirstname.innerHTML=" ";
         inputFirstname.style.backgroundColor = "#96e8c3";
@@ -173,8 +159,6 @@ function verifLastname (){
 const inputlastname = document.querySelector('#lastName');
 const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
 inputlastname.addEventListener("change", () => {
-   // console.log(inputlastname.value);
-   // console.log(inputlastname.reportValidity());
     if (inputlastname.reportValidity()){
         ErrorMsglastname.innerHTML=" ";
         inputlastname.style.backgroundColor = "#96e8c3";
@@ -195,8 +179,6 @@ function verifCity(){
 const inputcity = document.querySelector('#city');
 const cityMsglastname = document.querySelector('#cityErrorMsg');
 inputcity.addEventListener("change", () => {
-   // console.log(inputcity.value);
-    //console.log(inputcity.reportValidity());
     if (inputcity.reportValidity()){
         cityMsglastname.innerHTML=" ";
         inputcity.style.backgroundColor = "#96e8c3";
@@ -217,7 +199,6 @@ let validation = true;
 /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
     e.preventDefault();
-    //let validation = true;
     for(let input of document.querySelectorAll(".cart__order__form__question input")) {
     validation &= input.reportValidity();
         if (!validation) {
@@ -245,8 +226,7 @@ document.querySelector(".cart__order__form__submit").addEventListener("click", (
         });
         result.then(async (commande) => {
             try {
-                const myCommande = await commande.json();
-                //console.log(myCommande);
+                const myCommande = await commande.json();;
                 // rediriger vers la page de confirmation en utilisant l'ID 
                 window.location.href = `confirmation.html?id=${myCommande.orderId}`;
                 // clear pour ne pas stocker ou conservé le numero de la commande 
