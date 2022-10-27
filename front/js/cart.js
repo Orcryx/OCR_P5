@@ -10,6 +10,7 @@ let totalQuantity =[];
  * Calculer les totaux avec la méthode reduce()
  */
 function displayOrder () {
+    document.querySelector("#cart__items").innerHTML =""; 
     if(order === null || order.length === 0)
     {
         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
@@ -61,7 +62,7 @@ for(i=0; i<order.length ; i++)
     }
 }
 }
-displayOrder ()
+displayOrder ();
 
 /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
@@ -82,7 +83,7 @@ function deleteItem(){
             const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             order = order.filter(item => item != key);
             localStorage.setItem("sofa", JSON.stringify(order));
-            e.target.closest('.cart__item').remove();
+            window.location.reload();
             alert('Article(s) supprimé(s) du panier.');      
         });
     }
@@ -107,13 +108,12 @@ function modifProduct(){
             {
                 order = order.filter(item => item != key);
                 localStorage.setItem("sofa", JSON.stringify(order));
-                e.target.closest('.cart__item').remove();
+                window.location.reload();
             }else
             {
             localStorage.setItem("sofa", JSON.stringify(order));
+            window.location.reload();
             }
-
-
         });
     }
 }
