@@ -74,11 +74,12 @@ let tabID = order.map(sofa => sofa.idChooseProduct);
 */
 function deleteItem(){
     
-    const sofa = document.querySelector('.cart__item');
     let buttons = document.querySelectorAll('.deleteItem');
     for (let button of Array.from(buttons)){
         button.addEventListener("click", (e) => {
-            const key = order.find(element => element.idChooseProduct === sofa.dataset.id && element.colorChooseProduct === sofa.dataset.color);
+            const idKanap  = e.target.closest('article').getAttribute("data-id");
+            const colorKanap = e.target.closest('article').getAttribute("data-color");  
+            const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             order = order.filter(item => item != key);
             localStorage.setItem("sofa", JSON.stringify(order));
             e.target.closest('.cart__item').remove();
