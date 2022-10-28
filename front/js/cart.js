@@ -8,6 +8,7 @@ let totalQuantity =[];
 /** Afficher le contenu du panier :
  * Afficher le panier : parcourir tout le tableau[i] de l'objet order avec une boucle
  * Calculer les totaux avec la méthode reduce()
+ * Modifier ou supprimer une quantité
  */
 
 function DisplayOrder ()
