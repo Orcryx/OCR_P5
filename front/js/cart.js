@@ -55,24 +55,24 @@ function DisplayOrder ()
                                </div>
                          </article>`;
                
-                        /** CALCUL DU PANIER */
-                         const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
-                         /** Calculer la quantité de produit sélectionner dans le panier */
-                         let quantityOrder = parseInt(basket.quantite);
-                         //pousser les quantités dans le tableau totalQuantity
-                         totalQuantity.push(quantityOrder);
-                         // additionner les quantités avec la méthode reduce()
-                         let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
-                         document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
+                        // /** CALCUL DU PANIER */
+                        //  const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
+                        //  /** Calculer la quantité de produit sélectionner dans le panier */
+                        //  let quantityOrder = parseInt(basket.quantite);
+                        //  //pousser les quantités dans le tableau totalQuantity
+                        //  totalQuantity.push(quantityOrder);
+                        //  // additionner les quantités avec la méthode reduce()
+                        //  let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
+                        //  document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
                    
                       
-                         /** Calculer le prix final sélectionner dans le panier */
-                         let priceTotal = parseInt(data.price * basket.quantite);
-                         //pousser les prix dans le tableau totalPrice
-                         totalPrice.push(priceTotal);
-                         // additionner les prix avec la méthode reduce()
-                         let priceOrder = totalPrice.reduce(elementcalcul, 0);
-                         document.querySelector('#totalPrice').innerHTML= priceOrder;
+                        //  /** Calculer le prix final sélectionner dans le panier */
+                        //  let priceTotal = parseInt(data.price * basket.quantite);
+                        //  //pousser les prix dans le tableau totalPrice
+                        //  totalPrice.push(priceTotal);
+                        //  // additionner les prix avec la méthode reduce()
+                        //  let priceOrder = totalPrice.reduce(elementcalcul, 0);
+                        //  document.querySelector('#totalPrice').innerHTML= priceOrder;
 
                          /** *Supprimer un article du panier 
                         * Récupérer des données de construction de ma clé avec "data-""
@@ -90,8 +90,8 @@ function DisplayOrder ()
                                 const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
                                 order = order.filter(item => item != key);
                                 localStorage.setItem("sofa", JSON.stringify(order));
-                                //DisplayOrder ();
-                                location.reload();
+                                DisplayOrder ();
+                                //location.reload();
                                 alert('Article(s) supprimé(s) du panier.');      
                             });
                         }
@@ -117,19 +117,61 @@ function DisplayOrder ()
                                 }else
                                 {
                                 localStorage.setItem("sofa", JSON.stringify(order));
-                                //DisplayOrder ();
-                                location.reload();
+                                DisplayOrder ();
+                                //location.reload();
                                 }
                             });
                         }
-                    })
+                       
+                    }) //fin then
+                 
                 }
-               
             }
-
 }
 DisplayOrder();
 
+const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
+function PX()
+{
+    document.querySelector('#totalPrice').innerHTML= "";
+    for (let i=0; i<order.length; i++)
+    {
+        fetch(`http://localhost:3000/api/products/`+ order[i].idChooseProduct)
+        .then(product => product.json())
+        .then(data =>
+            {
+        
+          
+                         /** Calculer le prix final sélectionner dans le panier */
+                         let priceTotal = parseInt(data.price * order[i].quantityChooseProduct);
+                         //pousser les prix dans le tableau totalPrice
+                         totalPrice.push(priceTotal);
+                         // additionner les prix avec la méthode reduce()
+                         let priceOrder = totalPrice.reduce(elementcalcul, 0);
+                         console.log(priceOrder);
+                         document.querySelector('#totalPrice').innerHTML= priceOrder;
+             
+            })
+    };
+}
+PX();
+
+function QTE()
+{
+    document.querySelector('#totalQuantity').innerHTML = "" ;
+    for(let i=0; i<order.length; i++)
+    {
+        /** Calculer la quantité de produit sélectionner dans le panier */
+                         let quantityOrder = parseInt(order[i].quantityChooseProduct);
+                         //pousser les quantités dans le tableau totalQuantity
+                         totalQuantity.push(quantityOrder);
+                         // additionner les quantités avec la méthode reduce()
+                         let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
+                         document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
+    };
+}
+QTE()
+;
 /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
 
