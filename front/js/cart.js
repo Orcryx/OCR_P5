@@ -113,7 +113,7 @@ function DisplayOrder ()
                                 {
                                     order = order.filter(item => item != key);
                                     localStorage.setItem("sofa", JSON.stringify(order));
-                                    window.location.reload();
+                                    location.reload();
                                 }else
                                 {
                                 localStorage.setItem("sofa", JSON.stringify(order));
