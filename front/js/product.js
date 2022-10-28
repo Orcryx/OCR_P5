@@ -42,12 +42,9 @@ function myProduct(product)
             let customerProduct =
             {
                 idChooseProduct : idProduct,
-                nameChooseProduct : `${product.name}`,
-                prixChooseProduct : `${product.price}`,
                 colorChooseProduct : color,
                 quantityChooseProduct : quantity,
-                imageChooseProduct : `${product.imageUrl}`,   
-                altChooseProduct :`${product.altTxt}`,    
+  
             }
             alert('Produit(s) ajouté(s) au panier');
             saveDataInLocalStorage(customerProduct);
