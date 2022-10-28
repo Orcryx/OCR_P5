@@ -9,115 +9,129 @@ let totalQuantity =[];
  * Afficher le panier : parcourir tout le tableau[i] de l'objet order avec une boucle
  * Calculer les totaux avec la méthode reduce()
  */
-function displayOrder () {
+
+function DisplayOrder ()
+{
     document.querySelector("#cart__items").innerHTML =""; 
     if(order === null || order.length === 0)
     {
         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
-    } else {
-for(i=0; i<order.length ; i++)
-    {
-        document.querySelector("#cart__items").innerHTML +=`
-            <article class="cart__item" data-id="${order[i].idChooseProduct}" data-color="${order[i].colorChooseProduct}">
-                    <div class="cart__item__img">
-                        <img src="${order[i].imageChooseProduct}" alt="${order[i].altChooseProduct}">
-                    </div>
-                    <div class="cart__item__content">
-                        <div class="cart__item__content__description">
-                            <h2>${order[i].nameChooseProduct}</h2>
-                            <p>${order[i].colorChooseProduct}</p>
-                            <p>${order[i].prixChooseProduct * order[i].quantityChooseProduct} €</p>
-                        </div>
-                        <div class="cart__item__content__settings">
-                            <div class="cart__item__content__settings__quantity">
-                                <p>Qté :</p>
-                                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${order[i].quantityChooseProduct}">
-                            </div>
-                            <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem">Supprimer</p>
-                            </div>
-                        </div>
-                    </div>
-              </article>`;
-            
-             
-              const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
+    } else 
+            {
+                for(i=0; i<order.length ; i++)
+                {
+                 let basket =
+                    {
+                        id : order[i].idChooseProduct,
+                        couleur : order[i].colorChooseProduct,
+                        quantite : order[i].quantityChooseProduct
+                    }
+               
+                    fetch(`http://localhost:3000/api/products/`+ basket.id)
+                    .then(product => product.json())
+                    .then(data => 
+                   {
+                       document.querySelector("#cart__items").innerHTML +=`
+                       <article class="cart__item" data-id="${basket.id}" data-color="${basket.couleur}">
+                               <div class="cart__item__img">
+                                   <img src="${data.imageUrl}" alt="${data.altTxt}">
+                               </div>
+                               <div class="cart__item__content">
+                                   <div class="cart__item__content__description">
+                                       <h2>${data.name}</h2>
+                                       <p>${basket.couleur}</p>
+                                       <p>${data.price} €</p>
+                                   </div>
+                                   <div class="cart__item__content__settings">
+                                       <div class="cart__item__content__settings__quantity">
+                                           <p>Qté :</p>
+                                           <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${basket.quantite}">
+                                       </div>
+                                       <div class="cart__item__content__settings__delete">
+                                           <p class="deleteItem">Supprimer</p>
+                                       </div>
+                                   </div>
+                               </div>
+                         </article>`;
+               
+                        /** CALCUL DU PANIER */
+                         const elementcalcul = (accumulator, currentValue) => accumulator + currentValue;
+                         /** Calculer la quantité de produit sélectionner dans le panier */
+                         let quantityOrder = parseInt(basket.quantite);
+                         //pousser les quantités dans le tableau totalQuantity
+                         totalQuantity.push(quantityOrder);
+                         // additionner les quantités avec la méthode reduce()
+                         let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
+                         document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
+                   
+                      
+                         /** Calculer le prix final sélectionner dans le panier */
+                         let priceTotal = parseInt(data.price * basket.quantite);
+                         //pousser les prix dans le tableau totalPrice
+                         totalPrice.push(priceTotal);
+                         // additionner les prix avec la méthode reduce()
+                         let priceOrder = totalPrice.reduce(elementcalcul, 0);
+                         document.querySelector('#totalPrice').innerHTML= priceOrder;
 
-                /** Calculer la quantité de produit sélectionner dans le panier */
-                let quantityOrder = parseInt(order[i].quantityChooseProduct);
-                //pousser les quantités dans le tableau totalQuantity
-                totalQuantity.push(quantityOrder);
-                // additionner les quantités avec la méthode reduce()
-                let quantityArticle = totalQuantity.reduce(elementcalcul, 0);
-                document.querySelector('#totalQuantity').innerHTML = quantityArticle ;
+                         /** *Supprimer un article du panier 
+                        * Récupérer des données de construction de ma clé avec "data-""
+                        * créer un tableau sur la base du résultat de recherche dataset
+                        * pointer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
+                        * Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
+                        */
+                        let buttons = document.querySelectorAll('.deleteItem');
+                        for (let button of Array.from(buttons))
+                        {
+                            button.addEventListener("click", (e) => 
+                            {
+                                const idKanap  = e.target.closest('article').getAttribute("data-id");
+                                const colorKanap = e.target.closest('article').getAttribute("data-color");  
+                                const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
+                                order = order.filter(item => item != key);
+                                localStorage.setItem("sofa", JSON.stringify(order));
+                                //DisplayOrder ();
+                                window.location.reload();
+                                alert('Article(s) supprimé(s) du panier.');      
+                            });
+                        }
 
-                /** Calculer le prix final sélectionner dans le panier */
-                let priceTotal = parseInt(order[i].prixChooseProduct * order[i].quantityChooseProduct);
-                //pousser les prix dans le tableau totalPrice
-                totalPrice.push(priceTotal);
-                // additionner les prix avec la méthode reduce()
-                let priceOrder = totalPrice.reduce(elementcalcul, 0);
-                document.querySelector('#totalPrice').innerHTML= priceOrder;
+                        /** *Modifier un article du panier
+                        * créer un tableau et trouver avec find() le bon canapé à modifier en fonction de son ID + couleur
+                        * Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
+                        * Supprimer le produit si la quantité est égale à zero et recharger
+                        */
+                        let inputs = document.querySelectorAll('.itemQuantity');
+                        for(let newquantity of inputs){
+                            newquantity.addEventListener("change", (e) => 
+                            { 
+                                const idKanap  = e.target.closest('article').getAttribute("data-id");
+                                const colorKanap = e.target.closest('article').getAttribute("data-color");         
+                                const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
+                                key.quantityChooseProduct = parseInt(newquantity.value);
+                                if (key.quantityChooseProduct===0)
+                                {
+                                    order = order.filter(item => item != key);
+                                    localStorage.setItem("sofa", JSON.stringify(order));
+                                    window.location.reload();
+                                }else
+                                {
+                                localStorage.setItem("sofa", JSON.stringify(order));
+                                //DisplayOrder ();
+                                window.location.reload();
+                                }
+                            });
+                        }
+                    })
+                }
+               
+            }
 
-    }
 }
-}
-displayOrder ();
+DisplayOrder();
 
 /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
 let tabID = order.map(sofa => sofa.idChooseProduct);
 
-/** *Supprimer un article du panier 
- * Récupérer des données de construction de ma clé avec "data-""
- * créer un tableau sur la base du résultat de recherche dataset
- * pointer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
- * Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-*/
-function deleteItem(){
-    
-    let buttons = document.querySelectorAll('.deleteItem');
-    for (let button of Array.from(buttons)){
-        button.addEventListener("click", (e) => {
-            const idKanap  = e.target.closest('article').getAttribute("data-id");
-            const colorKanap = e.target.closest('article').getAttribute("data-color");  
-            const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
-            order = order.filter(item => item != key);
-            localStorage.setItem("sofa", JSON.stringify(order));
-            window.location.reload();
-            alert('Article(s) supprimé(s) du panier.');      
-        });
-    }
-  }
-  deleteItem();
-
-/** *Modifier un article du panier
- * créer un tableau et trouver avec find() le bon canapé à modifier en fonction de son ID + couleur
- * Modifier la valeur de quantité dans le tableau de key ou la recherche sur key est true - mettre value de l'input
- * Supprimer le produit si la quantité est égale à zero et recharger
- */
-function modifProduct(){  
-    let inputs = document.querySelectorAll('.itemQuantity');
-    for(let newquantity of inputs){
-        newquantity.addEventListener("change", (e) => 
-        { 
-            const idKanap  = e.target.closest('article').getAttribute("data-id");
-            const colorKanap = e.target.closest('article').getAttribute("data-color");         
-            const key = order.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
-            key.quantityChooseProduct = parseInt(newquantity.value);
-            if (key.quantityChooseProduct===0)
-            {
-                order = order.filter(item => item != key);
-                localStorage.setItem("sofa", JSON.stringify(order));
-                window.location.reload();
-            }else
-            {
-            localStorage.setItem("sofa", JSON.stringify(order));
-            window.location.reload();
-            }
-        });
-    }
-}
-modifProduct();
 
 /** *Gestion du formulaire de commande - REGEX */
 const firstname = document.querySelector('#firstName');
