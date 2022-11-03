@@ -69,7 +69,8 @@ function DisplayOrder ()
                          </article>`;
                         
                         }
-                        document.querySelector('#totalQuantity').innerHTML = calculNbArticle(basket)  ;
+                        document.querySelector('#totalQuantity').innerHTML = calculNbArticle(basket);
+                        document.querySelector('#totalPrice').innerHTML= PrixTotal(basket);
                 })
                     
                
@@ -196,7 +197,7 @@ function PrixTotal (products)
     let prix = 0;
     for(let i=0; i<products.length; i++)
     {
-        prix += products[i].quantityChooseProduct * products[i].prixChooseProduct ;
+        prix += products[i].quantityChooseProduct * products[i].price ;
     }
 return prix;
 }
