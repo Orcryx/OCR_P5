@@ -6,6 +6,7 @@ function Basket()
     document.querySelector("#cart__items").innerHTML =""; 
     if(Products === null || Products.length === 0)
      {
+        localStorage.clear();
         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
         document.querySelector('#totalQuantity').innerHTML = "0";  
         document.querySelector('#totalPrice').innerHTML= "0";
@@ -56,9 +57,6 @@ function Basket()
         }
 }
 Basket()
-
-
-
 
 
 
@@ -159,21 +157,15 @@ function modifItem(product)
  /*************************************************************************************************************************************************
   * FORMULAIRE & POST
  *************************************************************************************************************************************************/
+
+ 
  /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
  const order = JSON.parse(localStorage.getItem("sofa"));
 
  /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
  let tabID = order.map(sofa => sofa.idChooseProduct);
 
-// function numeroOrder(id)
-// {
-//     console.log("Mon ID : " +id);
-//     let tabID = id.map(element => element.idChooseProduct);
-//     console.log ("Mon ID2 : " + tabID);
-//     return tabID
-// }
 
- 
  /** *Gestion du formulaire de commande - REGEX */
  const firstname = document.querySelector('#firstName');
  const lastname = document.querySelector('#lastName');
@@ -249,15 +241,13 @@ function modifItem(product)
  }
  verifCity();
  
- /** variable de validation : utiliser plusieurs fois */
+ /** variable de validation */
  let validation = true;
  /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
  document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
      e.preventDefault();
      for(let input of document.querySelectorAll(".cart__order__form__question input")) {
      validation &= input.reportValidity();
-     console.log(order);
-     console.log(order.length);
          if (!validation || order===null || order.length ===0) {
              break;
          } 
