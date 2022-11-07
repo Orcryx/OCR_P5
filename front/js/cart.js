@@ -10,6 +10,7 @@ function getProduct ()
             {
                 return order;
             }
+            
 }
 let Products = getProduct();
 
@@ -18,13 +19,14 @@ let Products = getProduct();
 /** Afficher le panier*/
 function Basket()
 {
+    document.querySelector("#cart__items").innerHTML =""; 
     let Objet = [];
     for(let i=0;i<Products.length;i++)
     {
         fetch(`http://localhost:3000/api/products/`)
             .then(product => product.json())
             .then(product =>
-                { 
+                {
                     Objet = Products ;
                     let data = product.find(element => element._id === Objet[i].idChooseProduct);
                     Objet[i].price = data.price;
@@ -60,6 +62,9 @@ function Basket()
 }
 Basket()
 
+
+
+
 /** Calculer le nombre de produit dans la commande */
 function calculNbArticle (Products)
 {
@@ -74,6 +79,7 @@ return nbArticles ;
 //console.log('Il y a tant de produits dans la commande : ' + calculNbArticle (Products))
 
 
+
 /** Calculer le prix total dans la commande */
  
  function PrixTotal (products)
@@ -86,6 +92,8 @@ return nbArticles ;
  return prix;
  }
  
+
+
   /** Supprimer un élément du panier */
  function deleteItem(products)
  {
@@ -112,6 +120,8 @@ return nbArticles ;
 }
 deleteItem();
 
+
+
 /** Modifier un élément */
 function modifItem(product)
 {
@@ -130,12 +140,13 @@ function modifItem(product)
             {
                 order = product.filter(item => item != key);
                 localStorage.setItem("sofa", JSON.stringify(order));
-                //window.location.reload();
+                Basket();
+                //location.reload();
             }else
             {
             order = product.filter(item => item = key);
             localStorage.setItem("sofa", JSON.stringify(order));
-            //DisplayOrder ();
+            Basket();
             //location.reload();
             }
         });
