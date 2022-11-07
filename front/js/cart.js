@@ -3,11 +3,11 @@ function Basket()
 {
 
     let Products = JSON.parse(localStorage.getItem("sofa"));
-     document.querySelector("#cart__items").innerHTML =""; 
-     if(Products === null || Products.length === 0)
+    document.querySelector("#cart__items").innerHTML =""; 
+    if(Products === null || Products.length === 0)
      {
-         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
-         document.querySelector('#totalQuantity').innerHTML = "0";  
+        document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
+        document.querySelector('#totalQuantity').innerHTML = "0";  
         document.querySelector('#totalPrice').innerHTML= "0";
      } else 
         {
@@ -50,11 +50,12 @@ function Basket()
                             document.querySelector('#totalPrice').innerHTML= PrixTotal(Objet);
                             deleteItem(Objet)
                             modifItem(Objet)
+
                         })
             }
-           }
         }
-        Basket()
+}
+Basket()
 
 
 
@@ -99,12 +100,12 @@ return nbArticles ;
          //console.log(buttons)
          button.addEventListener("click", (e) => {
                  let idKanap  = e.target.closest('article').getAttribute("data-id");
-                 console.log(idKanap);
+                 //console.log(idKanap);
                  let colorKanap = e.target.closest('article').getAttribute("data-color"); 
-                 console.log(colorKanap); 
+                 //console.log(colorKanap); 
                  // créer un tableau filtréer qui cherche en fonction d'élément présent dans order
                  let key = products.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct == colorKanap);
-                 console.log(key);
+                 //console.log(key);
                  // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
                  let order = products.filter(item => item != key);
                  //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
@@ -115,7 +116,7 @@ return nbArticles ;
              });
     }
 }
-deleteItem();
+//deleteItem();
 
 
 
@@ -127,38 +128,51 @@ function modifItem(product)
         newquantity.addEventListener("change", (e) => 
         { 
             const idKanap  = e.target.closest('article').getAttribute("data-id");
-            console.log(idKanap)
+            //console.log(idKanap)
             const colorKanap = e.target.closest('article').getAttribute("data-color");
-            console.log(colorKanap);     
+            //console.log(colorKanap);     
             const key = product.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             console.log(key);
-            key.quantityChooseProduct = parseInt(newquantity.value);
-            if (key.quantityChooseProduct===0)
+            console.log(newquantity.value);
+            let controlValue = newquantity.value;
+            if(controlValue>100)
             {
-                order = product.filter(item => item != key);
-                localStorage.setItem("sofa", JSON.stringify(order));
-                Basket();
-            }else
-            {
-            order = product.filter(item => item = key);
+                newquantity.value = 1;
+                key.quantityChooseProduct = parseInt(newquantity.value);
+            }else if(controlValue<1)
+                        {
+                            newquantity.value = 1;
+                            key.quantityChooseProduct = parseInt(newquantity.value);
+                        }else
+                                {
+                                    key.quantityChooseProduct = parseInt(newquantity.value);
+                                }
+                            
+            let order = product.filter(item => item = key);
             localStorage.setItem("sofa", JSON.stringify(order));
             Basket();
-            //location.reload();
-            }
         });
     }
 }
-modifItem()
+//modifItem()
 
  /*************************************************************************************************************************************************
   * FORMULAIRE & POST
  *************************************************************************************************************************************************/
  /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
  const order = JSON.parse(localStorage.getItem("sofa"));
- 
+
  /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
  let tabID = order.map(sofa => sofa.idChooseProduct);
- 
+
+// function numeroOrder(id)
+// {
+//     console.log("Mon ID : " +id);
+//     let tabID = id.map(element => element.idChooseProduct);
+//     console.log ("Mon ID2 : " + tabID);
+//     return tabID
+// }
+
  
  /** *Gestion du formulaire de commande - REGEX */
  const firstname = document.querySelector('#firstName');
@@ -242,7 +256,9 @@ modifItem()
      e.preventDefault();
      for(let input of document.querySelectorAll(".cart__order__form__question input")) {
      validation &= input.reportValidity();
-         if (!validation) {
+     console.log(order);
+     console.log(order.length);
+         if (!validation || order===null || order.length ===0) {
              break;
          } 
      }   
