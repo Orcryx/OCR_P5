@@ -7,6 +7,8 @@ function Basket()
      if(Products === null || Products.length === 0)
      {
          document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
+         document.querySelector('#totalQuantity').innerHTML = "0";  
+        document.querySelector('#totalPrice').innerHTML= "0";
      } else 
         {
                     
@@ -107,10 +109,9 @@ return nbArticles ;
                  let order = products.filter(item => item != key);
                  //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
                  localStorage.setItem("sofa", JSON.stringify(order));
-                 // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-                 e.target.closest('article').remove();
+                 // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution      
                  Basket()
-
+                 e.target.closest('article').remove();
              });
     }
 }
