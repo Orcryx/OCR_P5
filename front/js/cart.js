@@ -126,10 +126,18 @@ function modifItem(product)
             const key = product.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
             console.log(key);
             key.quantityChooseProduct = parseInt(newquantity.value);
+            if (key.quantityChooseProduct===0)
+            {
+                order = product.filter(item => item != key);
+                localStorage.setItem("sofa", JSON.stringify(order));
+                //window.location.reload();
+            }else
+            {
             order = product.filter(item => item = key);
             localStorage.setItem("sofa", JSON.stringify(order));
             //DisplayOrder ();
             //location.reload();
+            }
         });
     }
 }
