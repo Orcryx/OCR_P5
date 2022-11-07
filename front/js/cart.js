@@ -111,7 +111,7 @@ return nbArticles ;
                  localStorage.setItem("sofa", JSON.stringify(order));
                  // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution      
                  Basket()
-                 e.target.closest('article').remove();
+                
              });
     }
 }
@@ -138,7 +138,6 @@ function modifItem(product)
                 order = product.filter(item => item != key);
                 localStorage.setItem("sofa", JSON.stringify(order));
                 Basket();
-                //location.reload();
             }else
             {
             order = product.filter(item => item = key);
@@ -150,3 +149,130 @@ function modifItem(product)
     }
 }
 modifItem()
+
+ /*************************************************************************************************************************************************
+  * FORMULAIRE & POST
+ *************************************************************************************************************************************************/
+//  /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
+//  const order = JSON.parse(localStorage.getItem("sofa"));
+ 
+//  /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
+//  let tabID = order.map(sofa => sofa.idChooseProduct);
+ 
+ 
+//  /** *Gestion du formulaire de commande - REGEX */
+//  const firstname = document.querySelector('#firstName');
+//  const lastname = document.querySelector('#lastName');
+//  const address = document.querySelector('#address');
+//  const city = document.querySelector('#city');
+//  const email = document.querySelector('#email');
+//  const emailWrong = document.querySelector('#emailErrorMsg');
+//  const submitOrder = document.querySelector('#order');
+ 
+//  /** Modifier l'attribue "pattern" des inputs type='text' avec "SetAttibue" pour ajouter des règles de contrôle */
+//  firstname.setAttribute("pattern", "[a-zA-Z-éèà]*");
+//  lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
+//  city.setAttribute("pattern", "[a-zA-Z-éèà]*");
+ 
+//  /** Aide pour saisie valide du formulaire */
+ 
+//  // Validation du prénom
+//  function verifFirstname (){
+//  const inputFirstname = document.querySelector('#firstName');
+//  const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
+//  inputFirstname.addEventListener("change", () => {
+//      if (inputFirstname.reportValidity()){
+//          ErrorMsgFirstname.innerHTML=" ";
+//          inputFirstname.style.backgroundColor = "#96e8c3";
+//          inputFirstname.style.border = "none";    
+//      }else
+//      {
+//          inputFirstname.style.backgroundColor = "white";
+//          inputFirstname.style.border = " #e89696 solid ";
+//          ErrorMsgFirstname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+//      }
+//  });
+//  }
+//  verifFirstname();
+ 
+//  // Validation du nom
+//  function verifLastname (){
+//  const inputlastname = document.querySelector('#lastName');
+//  const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
+//  inputlastname.addEventListener("change", () => {
+//      if (inputlastname.reportValidity()){
+//          ErrorMsglastname.innerHTML=" ";
+//          inputlastname.style.backgroundColor = "#96e8c3";
+//          inputlastname.style.border = "none";
+        
+//      }else
+//      {
+//          inputlastname.style.backgroundColor = "white";
+//          inputlastname.style.border = " #e89696 solid ";
+//          ErrorMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+//      }
+//  })
+//  }
+//  verifLastname();
+ 
+//  //validation du nom de la ville
+//  function verifCity(){
+//  const inputcity = document.querySelector('#city');
+//  const cityMsglastname = document.querySelector('#cityErrorMsg');
+//  inputcity.addEventListener("change", () => {
+//      if (inputcity.reportValidity()){
+//          cityMsglastname.innerHTML=" ";
+//          inputcity.style.backgroundColor = "#96e8c3";
+//          inputcity.style.border = "none";
+        
+//      }else
+//      {
+//          inputcity.style.backgroundColor = "white";
+//          inputcity.style.border = " #e89696 solid ";
+//          cityMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
+//      }
+//  });
+//  }
+//  verifCity();
+ 
+//  /** variable de validation : utiliser plusieurs fois */
+//  let validation = true;
+//  /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
+//  document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> {
+//      e.preventDefault();
+//      for(let input of document.querySelectorAll(".cart__order__form__question input")) {
+//      validation &= input.reportValidity();
+//          if (!validation) {
+//              break;
+//          } 
+//      }   
+//      if (validation) {
+//          const result = fetch("http://localhost:3000/api/products/order", {
+//              method: "POST",
+//              headers: {
+//                  'Content-Type': 'application/json'
+//              },
+//              body: JSON.stringify({
+//                  // Ajouter les élements de contact du formulaire
+//                  contact: {
+//                      firstName: firstname.value,
+//                      lastName: lastname.value,
+//                      address: address.value,
+//                      city: city.value,
+//                      email: email.value
+//                      },
+//                  //Ajouter ID produit
+//                  products : tabID
+//              })
+//          });
+//          result.then(async (commande) => {
+//              try {
+//                  const myCommande = await commande.json();;
+//                  // rediriger vers la page de confirmation en utilisant l'ID 
+//                  window.location.href = `confirmation.html?id=${myCommande.orderId}`;
+//                  // clear pour ne pas stocker ou conservé le numero de la commande 
+//                  localStorage.clear();
+//              } catch (e) {}
+//          });
+//      }
+//  })
