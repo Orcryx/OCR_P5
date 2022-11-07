@@ -1,66 +1,60 @@
-//Récupérer les éléments du product en localStorage
-function getProduct ()
-{
-    let order = JSON.parse(localStorage.getItem("sofa"));
-     document.querySelector("#cart__items").innerHTML =""; 
-     if(order === null || order.length === 0)
-     {
-         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
-     } else 
-            {
-                return order;
-            }
-            
-}
-let Products = getProduct();
-
-
-
 /** Afficher le panier*/
 function Basket()
 {
-    document.querySelector("#cart__items").innerHTML =""; 
-    let Objet = [];
-    for(let i=0;i<Products.length;i++)
-    {
-        fetch(`http://localhost:3000/api/products/`)
-            .then(product => product.json())
-            .then(product =>
-                {
-                    Objet = Products ;
-                    let data = product.find(element => element._id === Objet[i].idChooseProduct);
-                    Objet[i].price = data.price;
-                    //console.log(Objet);
-                    document.querySelector("#cart__items").innerHTML +=`
-                                          <article class="cart__item" data-id="${Objet[i].idChooseProduct}" data-color="${Objet[i].colorChooseProduct}">
-                                              <div class="cart__item__img">
-                                                  <img src="${data.imageUrl}" alt="${data.altTxt}">
-                                              </div>
-                                              <div class="cart__item__content">
-                                                  <div class="cart__item__content__description">
-                                                      <h2>${data.name}</h2>
-                                                      <p>${Objet[i].colorChooseProduct}</p>
-                                                      <p>${Objet[i].price} €</p>
-                                                  </div>
-                                                  <div class="cart__item__content__settings">
-                                                      <div class="cart__item__content__settings__quantity">
-                                                          <p>Qté :</p>
-                                                          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Objet[i].quantityChooseProduct}">
+
+    let Products = JSON.parse(localStorage.getItem("sofa"));
+     document.querySelector("#cart__items").innerHTML =""; 
+     if(Products === null || Products.length === 0)
+     {
+         document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
+     } else 
+        {
+                    
+            document.querySelector("#cart__items").innerHTML =""; 
+            let Objet = [];
+            for(let i=0;i<Products.length;i++)
+            {
+                fetch(`http://localhost:3000/api/products/`)
+                    .then(product => product.json())
+                    .then(product =>
+                        {
+                            Objet = Products ;
+                            let data = product.find(element => element._id === Objet[i].idChooseProduct);
+                            Objet[i].price = data.price;
+                            //console.log(Objet);
+                            document.querySelector("#cart__items").innerHTML +=`
+                                                  <article class="cart__item" data-id="${Objet[i].idChooseProduct}" data-color="${Objet[i].colorChooseProduct}">
+                                                      <div class="cart__item__img">
+                                                          <img src="${data.imageUrl}" alt="${data.altTxt}">
                                                       </div>
-                                                      <div class="cart__item__content__settings__delete">
-                                                          <p class="deleteItem">Supprimer</p>
+                                                      <div class="cart__item__content">
+                                                          <div class="cart__item__content__description">
+                                                              <h2>${data.name}</h2>
+                                                              <p>${Objet[i].colorChooseProduct}</p>
+                                                              <p>${Objet[i].price} €</p>
+                                                          </div>
+                                                          <div class="cart__item__content__settings">
+                                                              <div class="cart__item__content__settings__quantity">
+                                                                  <p>Qté :</p>
+                                                                  <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Objet[i].quantityChooseProduct}">
+                                                              </div>
+                                                              <div class="cart__item__content__settings__delete">
+                                                                  <p class="deleteItem">Supprimer</p>
+                                                              </div>
+                                                          </div>
                                                       </div>
-                                                  </div>
-                                              </div>
-                                       </article>`;
-                    document.querySelector('#totalQuantity').innerHTML = calculNbArticle(Objet);  
-                    document.querySelector('#totalPrice').innerHTML= PrixTotal(Objet);
-                    deleteItem(Objet)
-                    modifItem(Objet)
-                })
-    }
-}
-Basket()
+                                               </article>`;
+                            document.querySelector('#totalQuantity').innerHTML = calculNbArticle(Objet);  
+                            document.querySelector('#totalPrice').innerHTML= PrixTotal(Objet);
+                            deleteItem(Objet)
+                            modifItem(Objet)
+                        })
+            }
+           }
+        }
+        Basket()
+
+
 
 
 
@@ -114,7 +108,9 @@ return nbArticles ;
                  //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
                  localStorage.setItem("sofa", JSON.stringify(order));
                  // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
-                 Basket();
+                 e.target.closest('article').remove();
+                 Basket()
+
              });
     }
 }
