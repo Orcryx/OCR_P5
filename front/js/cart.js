@@ -36,7 +36,7 @@ function Basket()
                                               </div>
                                               <div class="cart__item__content">
                                                   <div class="cart__item__content__description">
-                                                      <h2>${Objet[i].idChooseProduc}</h2>
+                                                      <h2>${data.name}</h2>
                                                       <p>${Objet[i].colorChooseProduct}</p>
                                                       <p>${Objet[i].price} €</p>
                                                   </div>
@@ -54,6 +54,7 @@ function Basket()
                     document.querySelector('#totalQuantity').innerHTML = calculNbArticle(Objet);  
                     document.querySelector('#totalPrice').innerHTML= PrixTotal(Objet);
                     deleteItem(Objet)
+                    modifItem(Objet)
                 })
     }
 }
@@ -86,10 +87,11 @@ return nbArticles ;
  }
  
   /** Supprimer un élément du panier */
- function deleteItem(products){
+ function deleteItem(products)
+ {
      let buttons = document.querySelectorAll('.deleteItem');
      for (let button of Array.from(buttons))
-     {
+    {
          //console.log(buttons)
          button.addEventListener("click", (e) => {
                  let idKanap  = e.target.closest('article').getAttribute("data-id");
@@ -106,6 +108,29 @@ return nbArticles ;
                  // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution 
                  Basket();
              });
-     }
-       }
-       deleteItem();
+    }
+}
+deleteItem();
+
+/** Modifier un élément */
+function modifItem(product)
+{
+    let inputs = document.querySelectorAll('.itemQuantity');
+    for(let newquantity of inputs){
+        newquantity.addEventListener("change", (e) => 
+        { 
+            const idKanap  = e.target.closest('article').getAttribute("data-id");
+            console.log(idKanap)
+            const colorKanap = e.target.closest('article').getAttribute("data-color");
+            console.log(colorKanap);     
+            const key = product.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct === colorKanap);
+            console.log(key);
+            key.quantityChooseProduct = parseInt(newquantity.value);
+            order = product.filter(item => item = key);
+            localStorage.setItem("sofa", JSON.stringify(order));
+            //DisplayOrder ();
+            //location.reload();
+        });
+    }
+}
+modifItem()
