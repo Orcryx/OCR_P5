@@ -160,11 +160,14 @@ function numeroOrder()
     if(order === null || order.length === 0)
     {
         console.log("le panier est vide");
+    }else
+    {
+        /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
+        let tabID = order.map(sofa => sofa.idChooseProduct);
+        return tabID;
     }
-      /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
-      let tabID = order.map(sofa => sofa.idChooseProduct);
-      return tabID;
 }
+   
 let numero = numeroOrder();
 
  /** *Gestion du formulaire de commande - REGEX */
