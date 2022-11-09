@@ -295,7 +295,9 @@ let numero = numeroOrder();
             validation &= input.reportValidity();
             if (!validation || order===null || order.length ===0) 
             {
-               break;
+                location.reload();
+                break;
+               
             } 
         }   
         if (validation) 
