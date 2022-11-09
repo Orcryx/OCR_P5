@@ -33,7 +33,7 @@ function myProduct(product)
         e.preventDefault();
         let color = document.querySelector("#colors").value;
         let quantity = parseInt(document.querySelector("#quantity").value);
-        if( quantity ===  0 || color ===""){
+        if( quantity <1 || color ===""){
             e.preventDefault();
             alert('Veillez chsoisir une quantité et une couleur.')     
             
