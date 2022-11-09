@@ -33,9 +33,9 @@ function myProduct(product)
         e.preventDefault();
         let color = document.querySelector("#colors").value;
         let quantity = parseInt(document.querySelector("#quantity").value);
-        if( quantity <1 || color ===""){
+        if( quantity <1 || quantity >100 ||color ===""){
             e.preventDefault();
-            alert('Veillez chsoisir une quantité et une couleur.')     
+            alert('Veillez choisir une quantité entre 1 et 100 et une couleur.')     
             
         }else 
         {  

@@ -289,13 +289,13 @@ let numero = numeroOrder();
     let validation = true;
     document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> 
     {
-     e.preventDefault();
+        e.preventDefault();
         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
         {
             validation &= input.reportValidity();
             if (!validation || order===null || order.length ===0) 
             {
-                break;
+               break;
             } 
         }   
         if (validation) 
@@ -324,14 +324,15 @@ let numero = numeroOrder();
             });
             result.then(async (commande) => 
             {
-                try 
-                {
-                    const myCommande = await commande.json();;
-                    // rediriger vers la page de confirmation en utilisant l'ID 
-                    window.location.href = `confirmation.html?id=${myCommande.orderId}`;
-                    // clear pour ne pas stocker ou conservé le numero de la commande 
-                    localStorage.clear();
-                } catch (e) {}
+        try 
+        {
+            const myCommande = await commande.json();;
+            // rediriger vers la page de confirmation en utilisant l'ID 
+            window.location.href = `confirmation.html?id=${myCommande.orderId}`;
+            // clear pour ne pas stocker ou conservé le numero de la commande 
+            localStorage.clear();
+        } 
+        catch (e) {}
             });
         }
     })
