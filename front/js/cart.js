@@ -162,13 +162,18 @@ function numeroOrder()
         console.log("le panier est vide");
     }else
     {
-        /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
-        let tabID = order.map(sofa => sofa.idChooseProduct);
-        return tabID;
+        /** Créer les éléments du produit qui vont en POST */
+        order.forEach(element => 
+            {
+                delete element.colorChooseProduct; 
+                delete element.quantityChooseProduct;
+            })
+        return order;
     }
 }
    
-let numero = numeroOrder();
+let myOrder = numeroOrder();
+//console.log(myOrder);
 
  /** *Gestion du formulaire de commande - REGEX */
  const firstname = document.querySelector('#firstName');
@@ -186,102 +191,61 @@ let numero = numeroOrder();
  
 
  /** Aide pour saisie valide du formulaire */
- 
+
+
+ function verifCity(element, errorMsgId, elementMessage) {
+    const ErrorcityMsg = document.querySelector(errorMsgId);
+    if (element.reportValidity()) {
+      ErrorcityMsg.innerHTML = " ";
+      element.style.backgroundColor = "#96e8c3";
+      element.style.border = "none";
+    } else {
+      element.style.backgroundColor = "white";
+      element.style.border = " #e89696 solid ";
+      ErrorcityMsg.innerHTML = `Veillez saisir ${elementMessage}`;
+    }
+  }
+
  // Validation du prénom
- function verifFirstname (){
- const ErrorMsgFirstname = document.querySelector('#firstNameErrorMsg');
- firstname.addEventListener("change", () => {
-     if (firstname.reportValidity()){
-         ErrorMsgFirstname.innerHTML=" ";
-         firstname.style.backgroundColor = "#96e8c3";
-         firstname.style.border = "none";    
-     }else
-     {
-            firstname.style.backgroundColor = "white";
-            firstname.style.border = " #e89696 solid ";
-            ErrorMsgFirstname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
-     }
+ firstname.addEventListener("change", (e) => {
+    const errorMsgId = "#firstNameErrorMsg";
+    const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
+    verifCity(e.target, errorMsgId, elementMessage);
  });
- }
- verifFirstname();
+
  
  // Validation du nom
- function verifLastname (){
- const ErrorMsglastname = document.querySelector('#lastNameErrorMsg');
- lastname.addEventListener("change", () => {
-     if (lastname.reportValidity()){
-         ErrorMsglastname.innerHTML=" ";
-         lastname.style.backgroundColor = "#96e8c3";
-         lastname.style.border = "none";
-        
-     }else
-     {
-            lastname.style.backgroundColor = "white";
-            lastname.style.border = " #e89696 solid ";
-            ErrorMsglastname.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
-     }
- })
- }
- verifLastname();
- 
- //validation du nom de la ville
- function verifCity(){
- const ErrorcityMsg = document.querySelector('#cityErrorMsg');
- city.addEventListener("change", () => {
-     if (city.reportValidity()){
-            ErrorcityMsg.innerHTML=" ";
-            city.style.backgroundColor = "#96e8c3";
-            city.style.border = "none";
-        
-     }else
-     {
-            city.style.backgroundColor = "white";
-            city.style.border = " #e89696 solid ";
-            ErrorcityMsg.innerHTML=`Veillez saisir une chaine de caractères (a-zA-Z-éèà)`;
-     }
+ lastname.addEventListener("change", (e) => {
+    const errorMsgId = "#lastNameErrorMsg";
+    const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
+    verifCity(e.target, errorMsgId, elementMessage);
  });
- }
- verifCity();
 
- function veriAddress()
+ //validation du nom de la ville
+ city.addEventListener("change", (e) => 
  {
-    const ErroraddressMsg = document.querySelector('#addressErrorMsg');
-    address.addEventListener("change", ()=>
-    {
-        if(address.reportValidity())
-        {
-            ErroraddressMsg.innerHTML=" ";
-            address.style.backgroundColor = "#96e8c3";
-            address.style.border = "none";
-        }else
-        {
-            address.style.backgroundColor = "white";
-            address.style.border = " #e89696 solid ";
-            ErroraddressMsg.innerHTML=`Veillez saisir une adresse pour la livraison de votre commande.`;
-        }
-    })
- }
- veriAddress()
+    const errorMsgId = "#cityErrorMsg";
+    const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
+    verifCity(e.target, errorMsgId, elementMessage);
+});
 
- function veriMail()
- {
-    const emailErrorMsg = document.querySelector('#emailErrorMsg');
-    email.addEventListener("change", ()=>
-    {
-        if(email.reportValidity())
-        {
-            emailErrorMsg.innerHTML=" ";
-            email.style.backgroundColor = "#96e8c3";
-            email.style.border = "none";
-        }else
-        {
-            email.style.backgroundColor = "white";
-            email.style.border = " #e89696 solid ";
-            emailErrorMsg.innerHTML=`Exemple "monmail@mail.fr".`;
-        }
-    })
- }
- veriMail()
+ //validation de l'adresse de livraison
+address.addEventListener("change", (e)=>
+{
+    const errorMsgId = "#addressErrorMsg";
+    const elementMessage = "une adresse de livraison";
+    verifCity(e.target, errorMsgId, elementMessage);
+})
+
+
+//validation du mail
+email.addEventListener("change", (e)=>
+{
+    const errorMsgId = "#emailErrorMsg";
+    const elementMessage = "un email de contact";
+    verifCity(e.target, errorMsgId, elementMessage);
+})
+
 
 
 
@@ -324,7 +288,7 @@ let numero = numeroOrder();
                             email: email.value
                         },
                     //Ajouter ID produit
-                    products : numero
+                    products : myOrder
                 })
             });
             result.then(async (commande) => 
