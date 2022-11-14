@@ -228,6 +228,11 @@ email.addEventListener("change", (e)=>
     verifCity(e.target, errorMsgId, elementMessage);
 })
 
+
+/** Par défaut désactiver le bouton du formulaire
+ * Si un champs est faux - le bouton est désactivé
+ * Si les champs sont vrai - le bouton est activé
+ */
 function validation()
 {
     let validation = false;
@@ -235,27 +240,23 @@ function validation()
     {
         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
         {
-            //console.log(validation + ' est la valeur du champ au début' );
-            //console.log(input.reportValidity() + ' comparer avec ' + input.value);
             validation = input.reportValidity();
             
             if (!validation || tabID===null || tabID.length ===0) 
         {
-           //console.log("il y a une erreur dans un champ du formulaire " + validation);
            document.querySelector('#order').disabled = true;
-           
         } else
                 {
-                    //console.log("Le champ du formulaire est bien rempli " + validation);
                     document.querySelector('#order').disabled = false;
                 }
-        }
+        }  
     })
 }
 validation ()
-//console.log("MA REPONSE DE VALIDATION EST : "+ validation());
+
 
  /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
+
 //  function sendOrder()
 //  {
 //     /** variable de validation */
