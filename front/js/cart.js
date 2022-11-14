@@ -157,6 +157,7 @@ function modifItem(product)
  /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
  const order = JSON.parse(localStorage.getItem("sofa"));
  /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
+ 
 let tabID = order.map(sofa => sofa.idChooseProduct);
 
  /** *Gestion du formulaire de commande - REGEX */
@@ -176,11 +177,11 @@ let tabID = order.map(sofa => sofa.idChooseProduct);
 
  /** Aide pour saisie valide du formulaire */
 
- function verifCity(element, errorMsgId, elementMessage) {
+ function typingHelp(element, errorMsgId, elementMessage) {
     const ErrorcityMsg = document.querySelector(errorMsgId);
     if (element.reportValidity()) {
       ErrorcityMsg.innerHTML = " ";
-      element.style.backgroundColor = "#96e8c3";
+      element.style.backgroundColor = "white";
       element.style.border = "none";
     } else {
       element.style.backgroundColor = "white";
@@ -193,7 +194,7 @@ let tabID = order.map(sofa => sofa.idChooseProduct);
  firstname.addEventListener("change", (e) => {
     const errorMsgId = "#firstNameErrorMsg";
     const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
-    verifCity(e.target, errorMsgId, elementMessage);
+    typingHelp(e.target, errorMsgId, elementMessage);
  });
 
  
@@ -201,7 +202,7 @@ let tabID = order.map(sofa => sofa.idChooseProduct);
  lastname.addEventListener("change", (e) => {
     const errorMsgId = "#lastNameErrorMsg";
     const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
-    verifCity(e.target, errorMsgId, elementMessage);
+    typingHelp(e.target, errorMsgId, elementMessage);
  });
 
  //validation du nom de la ville
@@ -209,7 +210,7 @@ let tabID = order.map(sofa => sofa.idChooseProduct);
  {
     const errorMsgId = "#cityErrorMsg";
     const elementMessage = "une chaine de caractères (a-zA-Z-éèà)";
-    verifCity(e.target, errorMsgId, elementMessage);
+    typingHelp(e.target, errorMsgId, elementMessage);
 });
 
  //validation de l'adresse de livraison
@@ -217,7 +218,7 @@ address.addEventListener("change", (e)=>
 {
     const errorMsgId = "#addressErrorMsg";
     const elementMessage = "une adresse de livraison";
-    verifCity(e.target, errorMsgId, elementMessage);
+    typingHelp(e.target, errorMsgId, elementMessage);
 })
 
 //validation du mail
@@ -225,96 +226,68 @@ email.addEventListener("change", (e)=>
 {
     const errorMsgId = "#emailErrorMsg";
     const elementMessage = "un email de contact";
-    verifCity(e.target, errorMsgId, elementMessage);
+    typingHelp(e.target, errorMsgId, elementMessage);
 })
 
+/** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
 
-/** Par défaut désactiver le bouton du formulaire
- * Si un champs est faux - le bouton est désactivé
- * Si les champs sont vrai - le bouton est activé
- */
-function validation()
-{
-    let validation = false;
-    document.querySelector(".cart__order__form").addEventListener("change", ()=>
+ function sendOrder()
+ {
+    /** variable de validation */
+    let validation;
+    document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> 
     {
+        e.preventDefault();
         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
         {
             validation = input.reportValidity();
-            
-            if (!validation || tabID===null || tabID.length ===0) 
-        {
-           document.querySelector('#order').disabled = true;
-        } else
-                {
-                    document.querySelector('#order').disabled = false;
-                }
-        }  
-    })
-}
-validation ()
+            if (!validation || order===null || order.length ===0) 
+            {
 
-
- /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
-
-//  function sendOrder()
-//  {
-//     /** variable de validation */
-//     let validation = true;
-//     document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> 
-//     {
-//         e.preventDefault();
-//         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
-//         {
-//             validation &= input.reportValidity();
-//             if (!validation || myOrder===null || myOrder.length ===0) 
-//             {
-//                 //document.querySelector('.cart__order__form').reset();
-//                 location.reload();
-//                 break;
+                break;
                
-//             } 
-//         }   
-//         if (validation) 
-//         {
-//             const result = fetch("http://localhost:3000/api/products/order",
-//             {
-//                 method: "POST",
-//                 headers: 
-//                 {
-//                     'Content-Type': 'application/json'
-//                 },
-//                     body: JSON.stringify(
-//                         {
-//                             // Ajouter les élements de contact du formulaire
-//                             contact: 
-//                             {
-//                                 firstName: firstname.value,
-//                                 lastName: lastname.value,
-//                                 address: address.value,
-//                                 city: city.value,
-//                                 email: email.value
-//                                 },
-//                             //Ajouter le tableau des produits
-//                             products : tabID
+            } 
+        }   
+        if (validation) 
+        {
+            const result = fetch("http://localhost:3000/api/products/order",
+            {
+                method: "POST",
+                headers: 
+                {
+                    'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify(
+                        {
+                            // Ajouter les élements de contact du formulaire
+                            contact: 
+                            {
+                                firstName: firstname.value,
+                                lastName: lastname.value,
+                                address: address.value,
+                                city: city.value,
+                                email: email.value
+                                },
+                            //Ajouter le tableau des produits
+                            products : tabID
                     
-//                         })
+                        })
                  
-//             });
-//             result.then(async (commande) => 
-//             {
-//         try 
-//         {
-//             const myCommande = await commande.json();
-//             console.log(myCommande);
-//             // rediriger vers la page de confirmation en utilisant l'ID 
-//             window.location.href = `confirmation.html?id=${myCommande.orderId}`;
-//             // clear pour ne pas stocker ou conservé le numero de la commande 
-//             //localStorage.clear();
-//         } 
-//         catch (e) {}
-//             });
-//         }
-//     })
-//  }
-//  sendOrder ()
+            });
+            result.then(async (commande) => 
+            {
+        try 
+        {
+            const myCommande = await commande.json();
+            console.log(myCommande);
+            // rediriger vers la page de confirmation en utilisant l'ID 
+            window.location.href = `confirmation.html?id=${myCommande.orderId}`;
+            // clear pour ne pas stocker ou conservé le numero de la commande 
+            localStorage.clear();
+        } 
+        catch (e) {}
+            });
+        }
+    })
+ }
+ sendOrder ()
