@@ -51,11 +51,11 @@ function Basket()
                                                           </div>
                                                       </div>
                                                </article>`;
+                            
                             document.querySelector('#totalQuantity').innerHTML = calculNbArticle(Objet);  
                             document.querySelector('#totalPrice').innerHTML= PrixTotal(Objet);
                             deleteItem(Objet)
                             modifItem(Objet)
-
                         })
             }
         }
@@ -154,26 +154,10 @@ function modifItem(product)
  /*************************************************************************************************************************************************
   * FORMULAIRE & POST
  *************************************************************************************************************************************************/
-function numeroOrder()
-{
-    const order = JSON.parse(localStorage.getItem("sofa"));
-    if(order === null || order.length === 0)
-    {
-        console.log("le panier est vide");
-    }else
-    {
-        /** Créer les éléments du produit qui vont en POST */
-        order.forEach(element => 
-            {
-                delete element.colorChooseProduct; 
-                delete element.quantityChooseProduct;
-            })
-        return order;
-    }
-}
-   
-let myOrder = numeroOrder();
-//console.log(myOrder);
+ /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
+ const order = JSON.parse(localStorage.getItem("sofa"));
+ /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
+let tabID = order.map(sofa => sofa.idChooseProduct);
 
  /** *Gestion du formulaire de commande - REGEX */
  const firstname = document.querySelector('#firstName');
@@ -191,7 +175,6 @@ let myOrder = numeroOrder();
  
 
  /** Aide pour saisie valide du formulaire */
-
 
  function verifCity(element, errorMsgId, elementMessage) {
     const ErrorcityMsg = document.querySelector(errorMsgId);
@@ -237,7 +220,6 @@ address.addEventListener("change", (e)=>
     verifCity(e.target, errorMsgId, elementMessage);
 })
 
-
 //validation du mail
 email.addEventListener("change", (e)=>
 {
@@ -245,7 +227,6 @@ email.addEventListener("change", (e)=>
     const elementMessage = "un email de contact";
     verifCity(e.target, errorMsgId, elementMessage);
 })
-
 
 
 
@@ -260,8 +241,9 @@ email.addEventListener("change", (e)=>
         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
         {
             validation &= input.reportValidity();
-            if (!validation || order===null || order.length ===0) 
+            if (!validation || myOrder===null || myOrder.length ===0) 
             {
+                //document.querySelector('.cart__order__form').reset();
                 location.reload();
                 break;
                
@@ -276,30 +258,33 @@ email.addEventListener("change", (e)=>
                 {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(
-                    {
-                        // Ajouter les élements de contact du formulaire
-                        contact: 
+                    body: JSON.stringify(
                         {
-                            firstName: firstname.value,
-                            lastName: lastname.value,
-                            address: address.value,
-                            city: city.value,
-                            email: email.value
-                        },
-                    //Ajouter ID produit
-                    products : myOrder
-                })
+                            // Ajouter les élements de contact du formulaire
+                            contact: 
+                            {
+                                firstName: firstname.value,
+                                lastName: lastname.value,
+                                address: address.value,
+                                city: city.value,
+                                email: email.value
+                                },
+                            //Ajouter le tableau des produits
+                            products : tabID
+                    
+                        })
+                 
             });
             result.then(async (commande) => 
             {
         try 
         {
-            const myCommande = await commande.json();;
+            const myCommande = await commande.json();
+            console.log(myCommande);
             // rediriger vers la page de confirmation en utilisant l'ID 
             window.location.href = `confirmation.html?id=${myCommande.orderId}`;
             // clear pour ne pas stocker ou conservé le numero de la commande 
-            localStorage.clear();
+            //localStorage.clear();
         } 
         catch (e) {}
             });
