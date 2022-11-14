@@ -228,67 +228,92 @@ email.addEventListener("change", (e)=>
     verifCity(e.target, errorMsgId, elementMessage);
 })
 
-
-
- /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
- function sendOrder()
- {
-    /** variable de validation */
-    let validation = true;
-    document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> 
+function validation()
+{
+    let validation = false;
+    document.querySelector(".cart__order__form").addEventListener("change", ()=>
     {
-        e.preventDefault();
         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
         {
-            validation &= input.reportValidity();
-            if (!validation || myOrder===null || myOrder.length ===0) 
-            {
-                //document.querySelector('.cart__order__form').reset();
-                location.reload();
-                break;
-               
-            } 
-        }   
-        if (validation) 
+            //console.log(validation + ' est la valeur du champ au début' );
+            //console.log(input.reportValidity() + ' comparer avec ' + input.value);
+            validation = input.reportValidity();
+            
+            if (!validation || tabID===null || tabID.length ===0) 
         {
-            const result = fetch("http://localhost:3000/api/products/order",
-            {
-                method: "POST",
-                headers: 
+           //console.log("il y a une erreur dans un champ du formulaire " + validation);
+           document.querySelector('#order').disabled = true;
+           
+        } else
                 {
-                    'Content-Type': 'application/json'
-                },
-                    body: JSON.stringify(
-                        {
-                            // Ajouter les élements de contact du formulaire
-                            contact: 
-                            {
-                                firstName: firstname.value,
-                                lastName: lastname.value,
-                                address: address.value,
-                                city: city.value,
-                                email: email.value
-                                },
-                            //Ajouter le tableau des produits
-                            products : tabID
-                    
-                        })
-                 
-            });
-            result.then(async (commande) => 
-            {
-        try 
-        {
-            const myCommande = await commande.json();
-            console.log(myCommande);
-            // rediriger vers la page de confirmation en utilisant l'ID 
-            window.location.href = `confirmation.html?id=${myCommande.orderId}`;
-            // clear pour ne pas stocker ou conservé le numero de la commande 
-            //localStorage.clear();
-        } 
-        catch (e) {}
-            });
+                    //console.log("Le champ du formulaire est bien rempli " + validation);
+                    document.querySelector('#order').disabled = false;
+                }
         }
     })
- }
- sendOrder ()
+}
+validation ()
+//console.log("MA REPONSE DE VALIDATION EST : "+ validation());
+
+ /** Envoyer la commande avec la méthode POST vers l'api avec données du formulaire et ID produit */
+//  function sendOrder()
+//  {
+//     /** variable de validation */
+//     let validation = true;
+//     document.querySelector(".cart__order__form__submit").addEventListener("click", (e)=> 
+//     {
+//         e.preventDefault();
+//         for(let input of document.querySelectorAll(".cart__order__form__question input")) 
+//         {
+//             validation &= input.reportValidity();
+//             if (!validation || myOrder===null || myOrder.length ===0) 
+//             {
+//                 //document.querySelector('.cart__order__form').reset();
+//                 location.reload();
+//                 break;
+               
+//             } 
+//         }   
+//         if (validation) 
+//         {
+//             const result = fetch("http://localhost:3000/api/products/order",
+//             {
+//                 method: "POST",
+//                 headers: 
+//                 {
+//                     'Content-Type': 'application/json'
+//                 },
+//                     body: JSON.stringify(
+//                         {
+//                             // Ajouter les élements de contact du formulaire
+//                             contact: 
+//                             {
+//                                 firstName: firstname.value,
+//                                 lastName: lastname.value,
+//                                 address: address.value,
+//                                 city: city.value,
+//                                 email: email.value
+//                                 },
+//                             //Ajouter le tableau des produits
+//                             products : tabID
+                    
+//                         })
+                 
+//             });
+//             result.then(async (commande) => 
+//             {
+//         try 
+//         {
+//             const myCommande = await commande.json();
+//             console.log(myCommande);
+//             // rediriger vers la page de confirmation en utilisant l'ID 
+//             window.location.href = `confirmation.html?id=${myCommande.orderId}`;
+//             // clear pour ne pas stocker ou conservé le numero de la commande 
+//             //localStorage.clear();
+//         } 
+//         catch (e) {}
+//             });
+//         }
+//     })
+//  }
+//  sendOrder ()
