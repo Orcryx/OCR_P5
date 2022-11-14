@@ -155,10 +155,21 @@ function modifItem(product)
   * FORMULAIRE & POST
  *************************************************************************************************************************************************/
  /** *Récupérer le contenu du panier qui se trouve dans le localStorage */
- const order = JSON.parse(localStorage.getItem("sofa"));
- /** Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" */
- 
-let tabID = order.map(sofa => sofa.idChooseProduct);
+function numOrder()
+{
+    const order = JSON.parse(localStorage.getItem("sofa"));
+    if (order===null || order.length ===0) 
+    {
+        console.log("ce panier est vide")
+    }else
+        {
+            // Stocker les ID des produits qui se trouve dans "order" (en parcourant le localStorage), vers un nouveau tableau "TabID" 
+            let tabID = order.map(sofa => sofa.idChooseProduct);
+            return tabID;
+        }
+}
+const tabID = numOrder();
+
 
  /** *Gestion du formulaire de commande - REGEX */
  const firstname = document.querySelector('#firstName');
