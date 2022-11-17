@@ -186,9 +186,9 @@ const tabID = numOrder();
  const submitOrder = document.querySelector('#order');
 
  /** Modifier l'attribue "pattern" des inputs type='text' avec "SetAttibue" pour ajouter des règles de contrôle */
- firstname.setAttribute("pattern", "[a-zA-Z-éèà-ëêèéû]*");
- lastname.setAttribute("pattern", "[a-zA-Z-éèà]*");
- city.setAttribute("pattern", "[a-zA-Z-éèà]*");
+ firstname.setAttribute("pattern", "[a-zA-Z-éèà-ëêèéû ]*");
+ lastname.setAttribute("pattern", "[a-zA-Z-éèà ]*");
+ city.setAttribute("pattern", "[a-zA-Z-éèà ]*");
  
 
  /** Aide pour saisie valide du formulaire */
