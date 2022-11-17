@@ -1,12 +1,12 @@
-const url =  window.location.href; // propriété qui permet de récupérer l'url d'un page courante 
-const newURL = new URL(url); // Créer un nouvel objet à partir de url
+//const url =  window.location.href; // propriété qui permet de récupérer l'url d'un page courante 
+const newURL = new URL(window.location.href); // Créer un nouvel objet à partir de url = passe url 
 const idProduct = newURL.searchParams.get("id"); // Isolé l'ID qui est dans newURL avec .searcParams qui permet de récupérer le paramètre "_id" dans l'url avec .get
 
-
+const URLAPI = "http://localhost:3000/api/";
 /** * Récupérer les informations d'un produit de API avec son ID */
-fetch("http://localhost:3000/api/products/"+ idProduct)
+fetch(URLAPI + "products/"+ idProduct)
     .then(product => product.json())
-    .then(product => myProduct(product))
+    .then(product => displayOneProduct(product))
     .catch(error => alert('Opps ! il y a une erreur sur la page produit  ' +error))
 
 
@@ -14,9 +14,9 @@ fetch("http://localhost:3000/api/products/"+ idProduct)
  *  tableau.entête pour récupérer le produit en fonction de l'ID dans le fetch de API
  * boucle pour récupérer chaque couleur présente dans le tableau des couleurs
  *  */
-function myProduct(product)
+function displayOneProduct(product)
 {
-    document.querySelector(".item__img").innerHTML +=`<img src="${product.imageUrl}" alt="${product.altTxt}"></img>`; 
+    document.querySelector(".item__img").innerHTML +=`<img src="${product.imageUrl}" alt="${product.altTxt}">`; 
     document.querySelector("#title").innerHTML  +=`<h1 id="title">${product.name}</h1>`;
     document.querySelector("#price").innerHTML +=`<span id="price">${product.price}</span>`;
     document.querySelector("#description").innerHTML +=`<p id="description">${product.description}</p>`;
