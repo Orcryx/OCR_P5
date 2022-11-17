@@ -12,9 +12,9 @@ function Basket()
     if(Products === null || Products.length === 0)
      {
             localStorage.clear();
-            document.querySelector("#cart__items").innerHTML += `<p>Votre panier est vide.</p>`;
-            document.querySelector('#totalQuantity').innerHTML = "0";  
-            document.querySelector('#totalPrice').innerHTML= "0";
+            document.querySelector("#cart__items").textContent = `Votre panier est vide`;
+            document.querySelector('#totalQuantity').textContent = "0";  
+            document.querySelector('#totalPrice').textContent= "0";
      } else 
         {
                     
@@ -137,13 +137,13 @@ function modifItem(product)
                     newquantity.value = 1;
                     key.quantityChooseProduct = parseInt(newquantity.value);
                 }else if(controlValue<1)
-                            {
-                                newquantity.value = 1;
-                                key.quantityChooseProduct = parseInt(newquantity.value);
-                            }else
-                                    {
-                                        key.quantityChooseProduct = parseInt(newquantity.value);
-                                    }
+                    {
+                        newquantity.value = 1;
+                        key.quantityChooseProduct = parseInt(newquantity.value);
+                    }else
+                        {
+                            key.quantityChooseProduct = parseInt(newquantity.value);
+                        }
                                 
                 let order = product.filter(item => item = key);
                 // Retirer le prix car il ne doit par être en localStorage
