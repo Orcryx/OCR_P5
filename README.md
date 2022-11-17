@@ -14,3 +14,6 @@ Clone this repo. From the "back" folder of the project, run npm install. You can
 The server should run on localhost with default port 3000.
 If the server runs on another port for any reason, this is printed to the console when the server starts, e.g. 
 Listening on port 3001.
+
+Projet avec Visual Studio Code + Live server : http://127.0.0.1:5500/front/html/
+Lien projet avec GitHub : https://orcryx.github.io/OCR_P5/front/html/index.html 
