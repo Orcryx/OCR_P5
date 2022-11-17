@@ -107,6 +107,8 @@ function calculNbArticle (Products)
                     let key = products.find(element => element.idChooseProduct === idKanap && element.colorChooseProduct == colorKanap);
                     // filtrer l'item qui est égale à ma clé dans le localstorage et remplacer le tableau order par le tableau order filtré
                     let order = products.filter(item => item != key);
+                    // Retirer le prix car il ne doit par être en localStorage
+                    order.filter(element => element.price = order.price);
                     //écrir dans le localStorage : "sofa" prend la valeur de l'objet order devenu une chaine
                     localStorage.setItem("sofa", JSON.stringify(order));
                     // //Recharger la page pour actualiser l'affichage : voir pour trouver meilleure solution      
@@ -144,6 +146,8 @@ function modifItem(product)
                                     }
                                 
                 let order = product.filter(item => item = key);
+                // Retirer le prix car il ne doit par être en localStorage
+                order.filter(element => element.price = order.price);
                 localStorage.setItem("sofa", JSON.stringify(order));
                 Basket();
             });
