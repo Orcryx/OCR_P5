@@ -17,9 +17,9 @@ Listening on port 3001.
 
 Projet avec Visual Studio Code + Live server : http://127.0.0.1:5500/front/html/
 
-Start :
-1 - node server
-2 - link : https://orcryx.github.io/OCR_P5/front/html/index.html 
+Start : active node server + link : https://orcryx.github.io/OCR_P5/front/html/index.html .
+
+Stop : Ctrl + C
 
 ![image](https://user-images.githubusercontent.com/108926881/235455050-734122d8-31cd-4d1a-a58d-2d4d5d4d7b18.png)
 
